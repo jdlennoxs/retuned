@@ -46,7 +46,7 @@ export const spotifyRouter = router({
     )
     .query(async ({ ctx, input }) => {
       return await ctx.spotify.getRecommendations({
-        limit: 6,
+        limit: 26,
         seed_artists: input.seedArtists,
         seed_tracks: input.seedTracks,
       });
@@ -65,5 +65,11 @@ export const spotifyRouter = router({
         limit: input.limit || 25,
         offset: input.offset || 0,
       });
+    }),
+  postPlaylist: protectedProcedure
+    .input(z.array(z.string()))
+    .mutation(async ({ ctx, input }) => {
+      const res = await ctx.spotify.createPlaylist("frequencyme");
+      return await ctx.spotify.addTracksToPlaylist(res.body.id, input);
     }),
 });

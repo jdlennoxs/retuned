@@ -24,7 +24,8 @@
     "react-hover-observer": "^2.1.1",
     "spotify-web-api-node": "^5.0.2",
     "superjson": "1.9.1",
-    "zod": "^3.18.0"
+    "zod": "^3.18.0",
+    "zustand": "^4.3.3"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",

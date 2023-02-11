@@ -1,9 +1,10 @@
 import Image from "next/image";
+import { pluck } from "ramda";
 import ReactHoverObserver from "react-hover-observer";
 import AudioPreview from "./AudioPreview";
 
 interface ArtistListingProps {
-  artist: SpotifyArtist;
+  track: SpotifyApi.TrackObjectFull;
 }
 
 const getImageSize = (images: SpotifyApi.ImageObject[], size = 300) => {
@@ -11,47 +12,35 @@ const getImageSize = (images: SpotifyApi.ImageObject[], size = 300) => {
   return img?.url || "";
 };
 
-export const ArtistListing = ({ artist }: ArtistListingProps) => {
+export const Track = ({ track }: ArtistListingProps) => {
   return (
-    <div
-      className={`translate-x-[${Math.floor(
-        Math.random() * 3
-      )}px] translate-y-[${Math.floor(Math.random() * 3)}px]`}
-    >
-      <ReactHoverObserver
-        className={`mb-4 h-[250px] w-[200px] overflow-hidden rounded-lg shadow-md`}
-      >
+    <div>
+      <ReactHoverObserver className={`m-auto max-w-xl overflow-hidden`}>
         {({ isHovering }) => (
           <>
-            {artist?.tracks[0]?.preview_url && (
-              <AudioPreview
-                isPlaying={isHovering}
-                url={artist?.tracks[0]?.preview_url}
-              />
+            {track?.preview_url && (
+              <AudioPreview isPlaying={isHovering} url={track?.preview_url} />
             )}
-
-            <Image
-              className="-z-10 h-[250px] w-[200px] rounded-3xl border-[12px] border-white object-cover shadow-sm"
-              height="300"
-              width="300"
-              src={getImageSize(artist.images)}
-              alt=""
-            />
+            <div className="flex items-center p-2">
+              <Image
+                className="h-14 w-14 object-cover shadow-sm"
+                height="56"
+                width="56"
+                src={getImageSize(track.album.images)}
+                alt=""
+              />
+              <div className="m-2 flex flex-col">
+                <h1 className="text-lg font-semibold text-white">
+                  {track.name}
+                </h1>
+                <h3 className="font-semibold text-[#e3e1e4]">
+                  {pluck("name", track.artists).join(", ")}
+                </h3>
+              </div>
+            </div>
           </>
         )}
       </ReactHoverObserver>
-
-      <div>
-        <h3
-          style={{ textShadow: "1px 2px 2px black" }}
-          className="-mt-12 -ml-2 -rotate-3 text-center text-xl font-bold text-zinc-100 shadow-sm"
-        >
-          {artist.name}
-        </h3>
-        {/* <p className="text-l font-semibold text-zinc-200">
-          {artist?.tracks?.length}
-        </p> */}
-      </div>
     </div>
   );
 };

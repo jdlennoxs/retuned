@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import TrackCard from "./TrackCard";
 import { last, pluck, tail } from "ramda";
+import useRecommenderStore from "../utils/useRecommenderStore";
 
 const SWIPE_MIN = 250;
 
@@ -21,7 +22,8 @@ const shuffleArray = (array) => {
   return array;
 };
 
-const InfiniteCards = ({ tracks = [] }) => {
+const InfiniteCards = ({ tracks = [], recommendations = [] }) => {
+  console.log(recommendations);
   // const [trackArray, setTrackArray] = useState([]);
   // useEffect(
   //   function () {
@@ -29,27 +31,34 @@ const InfiniteCards = ({ tracks = [] }) => {
   //   },
   //   [tracks]
   // );
-
+  const chosenTracks = useRecommenderStore((state) => state.chosenTracks);
+  const addChosenTrack = useRecommenderStore((state) => state.addChosenTrack);
   const [cardAt, setCardAt] = useState(3);
   const [cards, setCards] = useState(tracks.slice(0, 3));
+  console.log(cardAt);
+
+  useEffect(() => {
+    tracks.splice(cardAt, 0, ...recommendations);
+  }, [recommendations, tracks]);
 
   const [dragStart, setDragStart] = useState({
     axis: "null",
     animation: { x: 0, y: 0 },
   });
 
-  console.log(cards);
-
   const x = useMotionValue(0);
   const scale = useTransform(x, [-SWIPE_MIN, 0, SWIPE_MIN], [1, 0.5, 1]);
   const shadowBlur = useTransform(x, [-SWIPE_MIN, 0, SWIPE_MIN], [0, 25, 0]);
+  const cardOpacity = useTransform(
+    x,
+    [-500, -400, 0, 400, 500],
+    [0, 1, 1, 1, 0]
+  );
   const shadowOpacity = useTransform(
     x,
     [-SWIPE_MIN, 0, SWIPE_MIN],
     [0, 0.1, 0]
   );
-
-  //   const opacity =
 
   const boxShadow = useMotionTemplate`0 ${shadowBlur}px 25px -5px rgba(0, 0, 0, ${shadowOpacity})`;
   const onDirectionLock = (axis) => setDragStart({ ...dragStart, axis: axis });
@@ -63,9 +72,11 @@ const InfiniteCards = ({ tracks = [] }) => {
     }, 300);
   };
 
-  const onDragEnd = (info) => {
-    if (info.offset.x >= SWIPE_MIN) animateCardSwipe({ x: 475, y: 0 });
-    else if (info.offset.x <= -SWIPE_MIN) animateCardSwipe({ x: -475, y: 0 });
+  const onDragEnd = (info, card) => {
+    if (info.offset.x >= SWIPE_MIN) {
+      animateCardSwipe({ x: 500, y: 0 });
+      addChosenTrack(card);
+    } else if (info.offset.x <= -SWIPE_MIN) animateCardSwipe({ x: -500, y: 0 });
   };
 
   const color = useTransform(
@@ -87,9 +98,14 @@ const InfiniteCards = ({ tracks = [] }) => {
               drag="x"
               card={card}
               key={index}
-              style={{ x, zIndex: index, touchAction: "none" }}
+              style={{
+                x,
+                zIndex: index,
+                touchAction: "none",
+                opacity: cardOpacity,
+              }}
               onDirectionLock={(axis) => onDirectionLock(axis)}
-              onDragEnd={(e, info) => onDragEnd(info)}
+              onDragEnd={(e, info) => onDragEnd(info, card)}
               animate={dragStart.animation}
             />
           </>

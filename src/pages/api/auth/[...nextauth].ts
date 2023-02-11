@@ -9,19 +9,9 @@ import { spotifyApi } from "../../../server/common/spotify-client";
 import { env } from "../../../env/server.mjs";
 
 const scopes = [
-  "user-read-recently-played",
-  "user-read-playback-state",
   "user-top-read",
-  "user-modify-playback-state",
-  "user-read-currently-playing",
-  "user-follow-read",
-  "playlist-read-private",
-  "user-read-email",
-  "user-read-private",
   "user-library-read",
-  "user-library-modify",
-  "playlist-read-collaborative",
-  "streaming",
+  "playlist-modify-public",
 ].join(",");
 
 const params = {

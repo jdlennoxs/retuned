@@ -1,11 +1,29 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { uniqBy } from "ramda";
+import Image from "next/image";
+import {
+  flatten,
+  isEmpty,
+  last,
+  not,
+  path,
+  pipe,
+  pluck,
+  propEq,
+  reject,
+  uniq,
+  uniqBy,
+} from "ramda";
+import { Track } from "../components/ArtistListing";
 
 import InfiniteCards from "../components/InfiniteCards";
 import Noise from "../components/Noise";
+import Playlist from "../components/Playlist";
+import recommendationParamSelector from "../utils/recommendationParameterSelector";
+import { trpc } from "../utils/trpc";
 import { useGetLikedTracksQuery } from "../utils/useGetLikedTracksQuery";
 import { useGetListenedTracksQuery } from "../utils/useGetListenedTracksQuery";
+import useRecommenderStore from "../utils/useRecommenderStore";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -13,6 +31,34 @@ export default function Home() {
     useGetListenedTracksQuery();
   const { data: likedTracks, isLoadingLiked } = useGetLikedTracksQuery();
 
+  const params = useRecommenderStore(recommendationParamSelector);
+
+  const setRecommendations = useRecommenderStore(
+    (state) => state.setRecommendations
+  );
+  trpc.spotify.getRecommendations.useQuery(params, {
+    enabled: not(isEmpty(path(["seedTracks"], params))),
+    onSuccess: (data) => {
+      setRecommendations(
+        pipe(
+          path(["body", "tracks"]),
+          flatten,
+          uniq,
+          reject(propEq("preview_url", null))
+        )(data) as SpotifyApi.TrackObjectFull[]
+      );
+    },
+  });
+
+  const recommendations = useRecommenderStore((state) => state.recommendations);
+  const chosenTracks = useRecommenderStore((state) => state.chosenTracks);
+  const setFeatures = useRecommenderStore((state) => state.setFeatures);
+  trpc.spotify.getTrackFeatures.useQuery(last(chosenTracks)?.id, {
+    enabled: !!last(chosenTracks)?.id,
+    onSuccess: (data) => {
+      setFeatures(data.body);
+    },
+  });
   const seedTracks = uniqBy((x) => x?.id, listenedTracks.concat(likedTracks));
 
   // #585273
@@ -36,13 +82,35 @@ export default function Home() {
             <button onClick={() => signIn()}>Sign in</button>{" "}
           </>
         ) : (
-          <div className="text-white">
-            Signed in as {session?.user.email} <br />
-            <button onClick={() => signOut()}>Sign out</button>{" "}
-            {isLoadingLiked || isLoadingListened ? (
-              <>Loading</>
+          <div className="flex flex-col text-white">
+            <div className="flex items-center">
+              <Image
+                src={session.user?.image || ""}
+                width={36}
+                height={36}
+                alt=""
+                className="mr-2 rounded-full"
+              />
+              <div className="flex flex-col">
+                {session?.user?.name}
+                <button onClick={() => signOut()}>Sign out</button>
+              </div>
+            </div>
+            {recommendations.length === 4 ? (
+              <Playlist />
             ) : (
-              <InfiniteCards tracks={seedTracks} />
+              <>
+                {isLoadingLiked || isLoadingListened ? (
+                  <>Loading</>
+                ) : (
+                  <InfiniteCards
+                    tracks={seedTracks}
+                    recommendations={
+                      chosenTracks.length > 1 ? last(recommendations) : []
+                    }
+                  />
+                )}
+              </>
             )}
           </div>
         )}

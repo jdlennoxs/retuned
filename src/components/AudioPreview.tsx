@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const AudioPreview = ({ url, isPlaying }) => {
+const AudioPreview = ({
+  url,
+  isPlaying,
+}: {
+  url: string;
+  isPlaying: boolean;
+}) => {
   const audioRef = useRef(new Audio(url));
   const intervalRef = useRef();
   useEffect(() => {

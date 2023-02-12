@@ -6,7 +6,8 @@ import { Track } from "./ArtistListing";
 const Playlist = () => {
   const chosenTracks = useRecommenderStore((state) => state.chosenTracks);
   const recommendations = useRecommenderStore((state) => state.recommendations);
-  const playlist = uniq(chosenTracks.concat(last(recommendations)));
+  const final = last(recommendations) || [];
+  const playlist = uniq(chosenTracks.concat(final as any[]));
   console.log(playlist);
   const createPlaylist = trpc.spotify.postPlaylist.useMutation();
   const handleCreate = async () => {

@@ -12,17 +12,13 @@ import useRecommenderStore from "../utils/useRecommenderStore";
 
 const SWIPE_MIN = 250;
 
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  }
-  return array;
-};
-
-const InfiniteCards = ({ tracks = [], recommendations = [] }) => {
+const InfiniteCards = ({
+  tracks,
+  recommendations = [],
+}: {
+  tracks: any[];
+  recommendations: SpotifyApi.RecommendationTrackObject[];
+}) => {
   console.log(recommendations);
   // const [trackArray, setTrackArray] = useState([]);
   // useEffect(
@@ -61,11 +57,12 @@ const InfiniteCards = ({ tracks = [], recommendations = [] }) => {
   );
 
   const boxShadow = useMotionTemplate`0 ${shadowBlur}px 25px -5px rgba(0, 0, 0, ${shadowOpacity})`;
-  const onDirectionLock = (axis) => setDragStart({ ...dragStart, axis: axis });
-  const animateCardSwipe = (animation) => {
+  const onDirectionLock = (axis: string) =>
+    setDragStart({ ...dragStart, axis: axis });
+  const animateCardSwipe = (animation: { x: number; y: number }) => {
     setDragStart({ ...dragStart, animation });
     setTimeout(() => {
-      setDragStart({ axis: null, animation: { x: 0, y: 0 } });
+      setDragStart({ axis: "null", animation: { x: 0, y: 0 } });
       x.set(0);
       setCards([tracks[cardAt], ...cards.slice(0, cards.length - 1)]);
       setCardAt(cardAt + 1);
@@ -164,7 +161,7 @@ const InfiniteCards = ({ tracks = [], recommendations = [] }) => {
         </svg>
         <h1 className="text-lg font-semibold text-white">{last(cards).name}</h1>
         <h3 className="font-semibold text-[#e3e1e4]">
-          {pluck("name", last(cards).artists).join(", ")}
+          {pluck("name")(last(cards).artists).join(", ")}
         </h3>
       </div>
     </div>

@@ -1,10 +1,14 @@
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useMotionTemplate,
-} from "framer-motion";
+import { motion } from "framer-motion";
 import { TrackListing } from "./TrackListing";
+
+interface CardProps {
+  card: any;
+  style: any;
+  onDirectionLock?: any;
+  onDragEnd?: any;
+  animate?: any;
+  drag?: any;
+}
 
 const TrackCard = ({
   card,
@@ -13,7 +17,7 @@ const TrackCard = ({
   onDragEnd,
   animate,
   drag,
-}) => {
+}: CardProps) => {
   return (
     <motion.div
       className="absolute w-72 place-items-center overflow-hidden rounded-2xl shadow-lg md:h-[480px] md:w-[480px]"

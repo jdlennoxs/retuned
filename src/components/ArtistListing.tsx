@@ -16,7 +16,7 @@ export const Track = ({ track }: ArtistListingProps) => {
   return (
     <div>
       <ReactHoverObserver className={`m-auto max-w-xl overflow-hidden`}>
-        {({ isHovering }) => (
+        {({ isHovering }: { isHovering: boolean }) => (
           <>
             {track?.preview_url && (
               <AudioPreview isPlaying={isHovering} url={track?.preview_url} />

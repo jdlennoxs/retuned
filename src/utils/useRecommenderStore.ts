@@ -4,8 +4,10 @@ import { devtools } from "zustand/middleware";
 interface RecommenderState {
   chosenTracks: SpotifyApi.TrackObjectFull[];
   addChosenTrack: (track: SpotifyApi.TrackObjectFull) => void;
-  recommendations: SpotifyApi.TrackObjectFull[][];
-  setRecommendations: (recommendations: SpotifyApi.TrackObjectFull[]) => void;
+  recommendations: SpotifyApi.RecommendationTrackObject[][];
+  setRecommendations: (
+    recommendations: SpotifyApi.RecommendationTrackObject[]
+  ) => void;
   features: SpotifyApi.AudioFeaturesResponse[];
   setFeatures: (features: SpotifyApi.AudioFeaturesResponse) => void;
 }

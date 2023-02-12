@@ -40,12 +40,10 @@ export default function Home() {
     enabled: not(isEmpty(path(["seedTracks"], params))),
     onSuccess: (data) => {
       setRecommendations(
-        pipe(
-          path(["body", "tracks"]),
-          flatten,
-          uniq,
-          reject(propEq("preview_url", null))
-        )(data) as SpotifyApi.TrackObjectFull[]
+        reject(
+          propEq("preview_url", null),
+          data.body.tracks
+        ) as SpotifyApi.RecommendationTrackObject[]
       );
     },
   });
@@ -53,7 +51,7 @@ export default function Home() {
   const recommendations = useRecommenderStore((state) => state.recommendations);
   const chosenTracks = useRecommenderStore((state) => state.chosenTracks);
   const setFeatures = useRecommenderStore((state) => state.setFeatures);
-  trpc.spotify.getTrackFeatures.useQuery(last(chosenTracks)?.id, {
+  trpc.spotify.getTrackFeatures.useQuery(last(chosenTracks)?.id || "", {
     enabled: !!last(chosenTracks)?.id,
     onSuccess: (data) => {
       setFeatures(data.body);
@@ -106,7 +104,7 @@ export default function Home() {
                   <InfiniteCards
                     tracks={seedTracks}
                     recommendations={
-                      chosenTracks.length > 1 ? last(recommendations) : []
+                      chosenTracks.length > 1 ? last(recommendations) || [] : []
                     }
                   />
                 )}

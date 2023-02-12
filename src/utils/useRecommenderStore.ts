@@ -10,6 +10,9 @@ interface RecommenderState {
   ) => void;
   features: SpotifyApi.AudioFeaturesResponse[];
   setFeatures: (features: SpotifyApi.AudioFeaturesResponse) => void;
+  seedTracks: any;
+  setSeedTracks: (seedTracks: any) => void;
+  removeAll: () => void;
 }
 
 const useRecommenderStore = create<RecommenderState>()(
@@ -18,6 +21,7 @@ const useRecommenderStore = create<RecommenderState>()(
       chosenTracks: [],
       features: [],
       recommendations: [],
+      seedTracks: [],
       addChosenTrack: (track) =>
         set((state) => ({
           chosenTracks: [...state.chosenTracks, track],
@@ -30,7 +34,17 @@ const useRecommenderStore = create<RecommenderState>()(
         set((state) => ({
           recommendations: [...state.recommendations, recommendations],
         })),
-      removeAll: () => set({ chosenTracks: [] }),
+      setSeedTracks: (tracks) =>
+        set((state) => ({
+          seedTracks: [tracks.sort(() => Math.random() - 0.5)],
+        })),
+      removeAll: () =>
+        set({
+          chosenTracks: [],
+          features: [],
+          recommendations: [],
+          seedTracks: [],
+        }),
     }),
     { name: "recommender-store" }
   )

@@ -1,24 +1,12 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
-import Image from "next/image";
-import {
-  flatten,
-  isEmpty,
-  last,
-  not,
-  path,
-  pipe,
-  pluck,
-  propEq,
-  reject,
-  uniq,
-  uniqBy,
-} from "ramda";
-import { Track } from "../components/ArtistListing";
+import { isEmpty, last, not, path, propEq, reject, uniqBy } from "ramda";
+import { useEffect } from "react";
 
 import InfiniteCards from "../components/InfiniteCards";
 import Noise from "../components/Noise";
 import Playlist from "../components/Playlist";
+import UserInfo from "../components/UserInfo";
 import recommendationParamSelector from "../utils/recommendationParameterSelector";
 import { trpc } from "../utils/trpc";
 import { useGetLikedTracksQuery } from "../utils/useGetLikedTracksQuery";
@@ -59,6 +47,9 @@ export default function Home() {
   });
   const seedTracks = uniqBy((x) => x?.id, listenedTracks.concat(likedTracks));
 
+  const stateTracks = useRecommenderStore((state) => state.seedTracks);
+  const setSeedTracks = useRecommenderStore((state) => state.setSeedTracks);
+
   // #585273
   // #8e88a1
   // #8f83d8
@@ -80,20 +71,8 @@ export default function Home() {
             <button onClick={() => signIn()}>Sign in</button>{" "}
           </>
         ) : (
-          <div className="flex flex-col text-white">
-            <div className="flex items-center">
-              <Image
-                src={session.user?.image || ""}
-                width={36}
-                height={36}
-                alt=""
-                className="mr-2 rounded-full"
-              />
-              <div className="flex flex-col">
-                {session?.user?.name}
-                <button onClick={() => signOut()}>Sign out</button>
-              </div>
-            </div>
+          <>
+            <UserInfo />
             {recommendations.length === 4 ? (
               <Playlist />
             ) : (
@@ -102,7 +81,7 @@ export default function Home() {
                   <>Loading</>
                 ) : (
                   <InfiniteCards
-                    tracks={seedTracks}
+                    tracks={seedTracks.sort(() => Math.random() - 0.5)}
                     recommendations={
                       chosenTracks.length > 1 ? last(recommendations) || [] : []
                     }
@@ -110,11 +89,9 @@ export default function Home() {
                 )}
               </>
             )}
-          </div>
+          </>
         )}
       </main>
     </>
   );
 }
-
-// export default Home;

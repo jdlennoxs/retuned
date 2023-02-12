@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { TrackListing } from "./TrackListing";
 
 interface CardProps {
@@ -18,9 +19,10 @@ const TrackCard = ({
   animate,
   drag,
 }: CardProps) => {
+  const [isPointerDown, setIsPointerDown] = useState(false);
   return (
     <motion.div
-      className="absolute w-72 place-items-center overflow-hidden rounded-2xl shadow-lg md:h-[480px] md:w-[480px]"
+      className="absolute flex h-screen w-screen"
       drag={drag}
       dragConstraints={{ left: 0, right: 0 }}
       dragDirectionLock
@@ -30,8 +32,10 @@ const TrackCard = ({
       style={{ ...style }}
       transition={{ ease: [0.6, 0.05, -0.01, 0.9] }}
       whileTap={{ scale: 0.85 }}
+      onPointerDown={() => setIsPointerDown(true)}
+      onPointerUp={() => setIsPointerDown(false)}
     >
-      <TrackListing track={card} key={card.id} />
+      <TrackListing track={card} key={card.id} isPlaying={isPointerDown} />
     </motion.div>
   );
 };

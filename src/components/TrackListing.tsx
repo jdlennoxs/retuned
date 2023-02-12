@@ -4,6 +4,7 @@ import { useState } from "react";
 
 interface TrackListingProps {
   track: SpotifyApi.TrackObjectFull;
+  isPlaying: boolean;
 }
 
 const getImageSize = (images: SpotifyApi.ImageObject[], size = 640) => {
@@ -11,14 +12,12 @@ const getImageSize = (images: SpotifyApi.ImageObject[], size = 640) => {
   return img?.url || "";
 };
 
-export const TrackListing = ({ track }: TrackListingProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+export const TrackListing = ({ track, isPlaying }: TrackListingProps) => {
   return (
     <div
-      className={`m-auto`}
-      onPointerDown={() => setIsPlaying(true)}
-      onPointerUp={() => setIsPlaying(false)}
-      onPointerLeave={() => setIsPlaying(false)}
+      className={
+        "m-auto w-72 place-items-center overflow-hidden rounded-2xl shadow-lg md:h-[480px] md:w-[480px]"
+      }
     >
       <>
         {track?.preview_url && (

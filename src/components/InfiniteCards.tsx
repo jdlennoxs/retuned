@@ -107,7 +107,12 @@ const InfiniteCards = ({
   };
 
   return (
-    <div className="infinite-cards relative z-20 m-auto flex justify-center">
+    <motion.div
+      className="infinite-cards relative z-20 m-auto flex justify-center"
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ ease: "easeOut", duration: 1 }}
+    >
       {renderCards()}
       <div className="progress-icon fixed bottom-10 z-0 justify-center p-4 text-center">
         <svg className="m-auto h-20" viewBox="0 0 50 50">
@@ -148,7 +153,7 @@ const InfiniteCards = ({
           {pluck("name")(last(cards).artists).join(", ")}
         </h3>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

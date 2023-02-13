@@ -13,6 +13,22 @@ import { useGetLikedTracksQuery } from "../utils/useGetLikedTracksQuery";
 import { useGetListenedTracksQuery } from "../utils/useGetListenedTracksQuery";
 import useRecommenderStore from "../utils/useRecommenderStore";
 
+function shuffle(array) {
+  const result = array;
+  let curId = array.length;
+  // There remain elements to shuffle
+  while (0 !== curId) {
+    // Pick a remaining element
+    const randId = Math.floor(Math.random() * curId);
+    curId -= 1;
+    // Swap it with the current element.
+    const tmp = result[curId];
+    result[curId] = result[randId];
+    result[randId] = tmp;
+  }
+  return result;
+}
+
 export default function Home() {
   const { data: session } = useSession();
   const { data: listenedTracks, isLoadingListened } =
@@ -45,10 +61,6 @@ export default function Home() {
       setFeatures(data.body);
     },
   });
-  const seedTracks = uniqBy((x) => x?.id, listenedTracks.concat(likedTracks));
-
-  const stateTracks = useRecommenderStore((state) => state.seedTracks);
-  const setSeedTracks = useRecommenderStore((state) => state.setSeedTracks);
 
   // #585273
   // #8e88a1
@@ -81,7 +93,9 @@ export default function Home() {
                   <>Loading</>
                 ) : (
                   <InfiniteCards
-                    tracks={seedTracks.sort(() => Math.random() - 0.5)}
+                    tracks={shuffle(
+                      uniqBy((x) => x?.id, listenedTracks.concat(likedTracks))
+                    )}
                     recommendations={
                       chosenTracks.length > 1 ? last(recommendations) || [] : []
                     }

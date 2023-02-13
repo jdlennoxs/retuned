@@ -1,29 +1,71 @@
-import { last, pluck, uniq } from "ramda";
+import { head, last, pluck, uniq } from "ramda";
+import recommendationParamSelector from "../utils/recommendationParameterSelector";
 import { trpc } from "../utils/trpc";
 import useRecommenderStore from "../utils/useRecommenderStore";
 import { Track } from "./ArtistListing";
+import { motion } from "framer-motion";
 //["#8f83d8", "#393359", "#ffc661"]
 const Playlist = () => {
-  const chosenTracks = useRecommenderStore((state) => state.chosenTracks);
-  const recommendations = useRecommenderStore((state) => state.recommendations);
-  const removeAll = useRecommenderStore((state) => state.removeAll);
+  const { chosenTracks, recommendations, removeAll } = useRecommenderStore(
+    (state) => state
+  );
+
+  const { targetEnergy, targetValence } = useRecommenderStore(
+    recommendationParamSelector
+  );
+
+  const titles = {
+    blue: ["Melancholy", "Gloomy", "Despondent"],
+    green: ["Moody", "Poignant", "Diverse"],
+    yellow: ["Chill", "Cool", "Soothing"],
+    red: ["Life Affirming", "Lively", "Exilharating"],
+  };
+
+  const getTitle = (name) => {
+    if (targetValence < 0.5) {
+      if (targetEnergy < 0.5) {
+        return `${
+          titles.blue[Math.floor(Math.random() * titles.blue.length)]
+        } ${name}`;
+      }
+      return `${
+        titles.green[Math.floor(Math.random() * titles.green.length)]
+      } ${name}`;
+    }
+    if (targetEnergy < 0.5) {
+      return `${
+        titles.yellow[Math.floor(Math.random() * titles.yellow.length)]
+      } ${name}`;
+    }
+    return `${
+      titles.red[Math.floor(Math.random() * titles.red.length)]
+    } ${name}`;
+  };
+
   const final = last(recommendations) || [];
   const playlist = uniq(chosenTracks.concat(final as any[]));
-  console.log(playlist);
   const createPlaylist = trpc.spotify.postPlaylist.useMutation();
   const handleCreate = async () => {
     const tracks = pluck("uri", playlist);
-    createPlaylist.mutate(tracks);
+    createPlaylist.mutate({ tracks, name: getTitle(head(playlist).name) });
   };
 
   return (
     <>
-      <h1 className="my-20 text-center text-xl font-bold text-white">
-        Your playlist is complete.
-      </h1>
-      <div className="mb-56 flex-col justify-center">
-        {playlist?.map((track) => (
-          <Track track={track} key={track.id} />
+      <div className="my-20 text-center  text-white">
+        <h3 className="text-lg font-bold">Your playlist is complete.</h3>
+        <h1 className="text-xl font-bold">{getTitle(head(playlist).name)}</h1>
+      </div>
+      <div className="mb-72 flex-col justify-center">
+        {playlist?.map((track, index) => (
+          <motion.div
+            key={track.id}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.25, delay: 0.1 * index }}
+          >
+            <Track track={track} />
+          </motion.div>
         ))}
         <div className="fixed bottom-0">
           <div className="h-20 bg-gradient-to-t from-[#393359] to-transparent"></div>

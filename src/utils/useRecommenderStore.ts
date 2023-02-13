@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 interface RecommenderState {
+  offsets: any;
   chosenTracks: SpotifyApi.TrackObjectFull[];
   addChosenTrack: (track: SpotifyApi.TrackObjectFull) => void;
   recommendations: SpotifyApi.RecommendationTrackObject[][];
@@ -10,18 +11,24 @@ interface RecommenderState {
   ) => void;
   features: SpotifyApi.AudioFeaturesResponse[];
   setFeatures: (features: SpotifyApi.AudioFeaturesResponse) => void;
-  seedTracks: any;
-  setSeedTracks: (seedTracks: any) => void;
   removeAll: () => void;
 }
+
+const LIMIT = 10;
 
 const useRecommenderStore = create<RecommenderState>()(
   devtools(
     (set) => ({
+      offsets: {
+        mediumLimit: LIMIT,
+        shortLimit: LIMIT,
+        recentLimit: LIMIT,
+        mediumOffset: Math.floor(Math.random() * (50 - LIMIT)),
+        shortOffset: Math.floor(Math.random() * (50 - LIMIT)),
+      },
       chosenTracks: [],
       features: [],
       recommendations: [],
-      seedTracks: [],
       addChosenTrack: (track) =>
         set((state) => ({
           chosenTracks: [...state.chosenTracks, track],
@@ -34,16 +41,11 @@ const useRecommenderStore = create<RecommenderState>()(
         set((state) => ({
           recommendations: [...state.recommendations, recommendations],
         })),
-      setSeedTracks: (tracks) =>
-        set((state) => ({
-          seedTracks: [tracks.sort(() => Math.random() - 0.5)],
-        })),
       removeAll: () =>
         set({
           chosenTracks: [],
           features: [],
           recommendations: [],
-          seedTracks: [],
         }),
     }),
     { name: "recommender-store" }

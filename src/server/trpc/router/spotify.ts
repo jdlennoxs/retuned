@@ -66,10 +66,22 @@ export const spotifyRouter = router({
         offset: input.offset || 0,
       });
     }),
+  getUserRecentTracks: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.spotify.getMyRecentlyPlayedTracks({
+        limit: input.limit || 10,
+        before: new Date().getTime() - 24 * 60 * 60 * 1000,
+      });
+    }),
   postPlaylist: protectedProcedure
-    .input(z.array(z.string()))
+    .input(z.object({ tracks: z.string().array(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      const res = await ctx.spotify.createPlaylist("frequencyme");
-      return await ctx.spotify.addTracksToPlaylist(res.body.id, input);
+      const res = await ctx.spotify.createPlaylist(input.name);
+      return await ctx.spotify.addTracksToPlaylist(res.body.id, input.tracks);
     }),
 });

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import AudioPreview from "./AudioPreview";
-import { useState } from "react";
 
 interface TrackListingProps {
   track: SpotifyApi.TrackObjectFull;
@@ -16,7 +15,7 @@ export const TrackListing = ({ track, isPlaying }: TrackListingProps) => {
   return (
     <div
       className={
-        "m-auto w-72 place-items-center overflow-hidden rounded-2xl shadow-lg md:h-[480px] md:w-[480px]"
+        "relative m-auto w-72 place-items-center overflow-hidden rounded-2xl shadow-lg md:h-[480px] md:w-[480px]"
       }
     >
       <>
@@ -24,9 +23,8 @@ export const TrackListing = ({ track, isPlaying }: TrackListingProps) => {
           <AudioPreview isPlaying={isPlaying} url={track.preview_url} />
         )}
         <Image
-          className="pointer-events-none -z-10"
-          height="640"
-          width="640"
+          className="object pointer-events-none -z-10 object-fill"
+          fill
           src={getImageSize(track.album.images)}
           alt=""
         />

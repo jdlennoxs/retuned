@@ -5,7 +5,7 @@ import { last, pluck } from "ramda";
 import useRecommenderStore from "../utils/useRecommenderStore";
 import TrackCard from "./TrackCard";
 
-const SWIPE_MIN = 150;
+const SWIPE_MIN = 100;
 
 const InfiniteCards = ({
   tracks,
@@ -68,8 +68,8 @@ const InfiniteCards = ({
   );
   const opacity = useTransform(x, [-SWIPE_MIN, 0, SWIPE_MIN], [1, 0, 1]);
   const tickPath = useTransform(x, [10, SWIPE_MIN / 2], [0, 1]);
-  const crossPathA = useTransform(x, [-10, -55], [0, 1]);
-  const crossPathB = useTransform(x, [-50, -SWIPE_MIN / 2], [0, 1]);
+  const crossPathA = useTransform(x, [-10, -25], [0, 1]);
+  const crossPathB = useTransform(x, [-25, -SWIPE_MIN / 2], [0, 1]);
 
   const renderCards = () => {
     return cards.map((card, index) => {
@@ -101,6 +101,9 @@ const InfiniteCards = ({
               scale,
               zIndex: index,
             }}
+            animate={{ opacity: 1, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            transition={{ ease: "linear", duration: 0.5, delay: 1 }}
           />
         );
     });
@@ -109,8 +112,8 @@ const InfiniteCards = ({
   return (
     <motion.div
       className="infinite-cards relative z-20 m-auto flex justify-center"
-      initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 100 }}
       transition={{ ease: "easeOut", duration: 1 }}
     >
       {renderCards()}

@@ -41,7 +41,6 @@ const Playlist = () => {
       titles.red[Math.floor(Math.random() * titles.red.length)]
     } ${name}`;
   };
-
   const final = last(recommendations) || [];
   const playlist = uniq(chosenTracks.concat(final as any[]));
   const createPlaylist = trpc.spotify.postPlaylist.useMutation();
@@ -49,6 +48,9 @@ const Playlist = () => {
     const tracks = pluck("uri", playlist);
     createPlaylist.mutate({ tracks, name: getTitle(head(playlist).name) });
   };
+
+  const getLink = () =>
+    `https://open.spotify.com/playlist/${createPlaylist.data}`;
 
   return (
     <>
@@ -62,7 +64,7 @@ const Playlist = () => {
             key={track.id}
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.25, delay: 0.1 * index }}
+            transition={{ duration: 0.25, delay: 1 + 0.1 * index }}
           >
             <Track track={track} />
           </motion.div>
@@ -70,12 +72,20 @@ const Playlist = () => {
         <div className="fixed bottom-0">
           <div className="h-20 bg-gradient-to-t from-[#393359] to-transparent"></div>
           <div className="flex w-screen flex-col items-center gap-6 bg-[#393359] p-8">
-            <button
-              className="w-full max-w-xl rounded-lg bg-[#ffc661] p-4 text-lg font-semibold text-[#393359]"
-              onClick={handleCreate}
-            >
-              Add playlist to Spotify
-            </button>
+            {createPlaylist.isSuccess ? (
+              <button className="w-full max-w-xl rounded-lg bg-[#ffc661] p-4 text-lg font-semibold text-[#393359]">
+                <a href={getLink()} target="_blank" rel="noreferrer">
+                  Go to playlist
+                </a>
+              </button>
+            ) : (
+              <button
+                className="w-full max-w-xl rounded-lg bg-[#ffc661] p-4 text-lg font-semibold text-[#393359]"
+                onClick={handleCreate}
+              >
+                Add playlist to Spotify
+              </button>
+            )}
             <button
               className="w-full max-w-xl rounded-lg bg-[#8f83d8] p-4 text-lg"
               onClick={removeAll}

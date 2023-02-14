@@ -82,6 +82,7 @@ export const spotifyRouter = router({
     .input(z.object({ tracks: z.string().array(), name: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const res = await ctx.spotify.createPlaylist(input.name);
-      return await ctx.spotify.addTracksToPlaylist(res.body.id, input.tracks);
+      await ctx.spotify.addTracksToPlaylist(res.body.id, input.tracks);
+      return res.body.id;
     }),
 });

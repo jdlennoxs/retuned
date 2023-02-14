@@ -9,6 +9,8 @@ interface CardProps {
   onDragEnd?: any;
   animate?: any;
   drag?: any;
+  initial?: any;
+  transition?: any;
 }
 
 const TrackCard = ({
@@ -18,6 +20,8 @@ const TrackCard = ({
   onDragEnd,
   animate,
   drag,
+  initial,
+  transition,
 }: CardProps) => {
   const [isPointerDown, setIsPointerDown] = useState(false);
   return (
@@ -30,10 +34,11 @@ const TrackCard = ({
       onDragEnd={onDragEnd}
       animate={animate}
       style={{ ...style }}
-      transition={{ ease: [0.6, 0.05, -0.01, 0.9] }}
+      transition={{ ease: [0.6, 0.05, -0.01, 0.9], ...transition }}
       whileTap={{ scale: 0.85 }}
       onPointerDown={() => setIsPointerDown(true)}
       onPointerUp={() => setIsPointerDown(false)}
+      initial={initial}
     >
       <TrackListing track={card} key={card.id} isPlaying={isPointerDown} />
     </motion.div>

@@ -50,7 +50,7 @@ const InfiniteCards = ({
       x.set(0);
       setCards([tracks[cardAt], ...cards.slice(0, cards.length - 1)]);
       setCardAt(cardAt + 1);
-    }, 300);
+    }, 400);
   };
 
   const onDragEnd = (info, card) => {
@@ -114,7 +114,7 @@ const InfiniteCards = ({
       className="infinite-cards relative z-20 m-auto flex justify-center"
       animate={{ opacity: 1, y: 0 }}
       initial={{ opacity: 0, y: 100 }}
-      transition={{ ease: "easeOut", duration: 1 }}
+      transition={{ ease: "easeOut", duration: 1, delay: 1 }}
     >
       {renderCards()}
       <div className="progress-icon fixed bottom-10 z-0 justify-center p-4 text-center">

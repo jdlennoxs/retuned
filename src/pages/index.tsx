@@ -69,8 +69,11 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Playlistr</title>
-        <meta name="description" content="Jump into something new" />
+        <title>Re:Tuned</title>
+        <meta
+          name="description"
+          content="Discover your new musical obsession"
+        />
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <Noise />

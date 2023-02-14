@@ -54,15 +54,16 @@ const Playlist = () => {
 
   return (
     <>
-      <div className="my-20 text-center  text-white">
+      <div className="my-16 text-center  text-white">
         <h3 className="text-lg font-bold">Your playlist is complete.</h3>
         <h1 className="text-xl font-bold">{getTitle(head(playlist).name)}</h1>
       </div>
-      <div className="mb-72 flex-col justify-center">
+      <div className="mb-60 flex-col justify-center">
         {playlist?.map((track, index) => (
           <motion.div
+            className="px-4"
             key={track.id}
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.25, delay: 1 + 0.1 * index }}
           >
@@ -70,24 +71,24 @@ const Playlist = () => {
           </motion.div>
         ))}
         <div className="fixed bottom-0">
-          <div className="h-20 bg-gradient-to-t from-[#393359] to-transparent"></div>
-          <div className="flex w-screen flex-col items-center gap-6 bg-[#393359] p-8">
+          <div className="h-20 bg-gradient-to-t from-[#504A6D] to-transparent"></div>
+          <div className="flex w-screen flex-col items-center gap-4 bg-[#504A6D] p-4">
             {createPlaylist.isSuccess ? (
-              <button className="w-full max-w-xl rounded-lg bg-[#ffc661] p-4 text-lg font-semibold text-[#393359]">
+              <button className="w-full max-w-sm rounded-full bg-[#ffc661] p-4 text-lg font-semibold text-[#504A6D]">
                 <a href={getLink()} target="_blank" rel="noreferrer">
                   Go to playlist
                 </a>
               </button>
             ) : (
               <button
-                className="w-full max-w-xl rounded-lg bg-[#ffc661] p-4 text-lg font-semibold text-[#393359]"
+                className="w-full max-w-sm rounded-full bg-[#ffc661] p-4 text-lg font-semibold  text-[#504A6D]"
                 onClick={handleCreate}
               >
                 Add playlist to Spotify
               </button>
             )}
             <button
-              className="w-full max-w-xl rounded-lg bg-[#8f83d8] p-4 text-lg"
+              className="w-full max-w-sm rounded-full bg-[#8f83d8] p-4 text-lg font-semibold  text-white"
               onClick={removeAll}
             >
               Start again

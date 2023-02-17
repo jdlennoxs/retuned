@@ -22,7 +22,7 @@ export const useGetLikedTracksQuery = () => {
     { limit: 1 },
     {
       onSuccess: (data) => {
-        setOffset(Math.floor(Math.random() * data.body.total) - 30);
+        setOffset(Math.floor(Math.random() * (data.body.total - 30)));
       },
       enabled: offset === 0,
     }

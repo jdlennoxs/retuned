@@ -11,6 +11,7 @@ import { env } from "../../../env/server.mjs";
 const scopes = [
   "user-top-read",
   "user-library-read",
+  "user-read-recently-played",
   "playlist-modify-public",
 ].join(",");
 
@@ -58,12 +59,10 @@ export const authOptions: NextAuthOptions = {
       }
       // Return previous token if the access token has not expired yet
       if (Date.now() < spotifyToken.accessTokenExpires) {
-        console.log("access token valid");
         return token;
       }
 
       // Access token has expired, try to update it
-      console.log("access token expired");
       return await refreshAccessToken(<SpotifyJWT>token);
     },
     async session({ session, token }) {
@@ -84,6 +83,9 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  pages: {
+    signIn: "/auth/signin",
+  },
 };
 
 export default NextAuth(authOptions);

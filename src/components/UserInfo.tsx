@@ -4,7 +4,7 @@ import Image from "next/image";
 const UserInfo = () => {
   const { data: session } = useSession();
   return (
-    <div className="fixed top-0 w-full  text-white">
+    <div className="fixed top-0 z-30 w-full  text-white">
       <div className="flex items-center justify-between">
         <div className="p-2 text-xl">
           Re:<span className="font-semibold">Tuned</span>

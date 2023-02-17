@@ -1,11 +1,13 @@
-import { head, last, pluck, uniq } from "ramda";
+import { head, last, pluck, uniqBy } from "ramda";
 import recommendationParamSelector from "../utils/recommendationParameterSelector";
 import { trpc } from "../utils/trpc";
 import useRecommenderStore from "../utils/useRecommenderStore";
 import { Track } from "./ArtistListing";
 import { motion } from "framer-motion";
+import { useState } from "react";
 //["#8f83d8", "#393359", "#ffc661"]
 const Playlist = () => {
+  const [rand] = useState(Math.floor(Math.random()));
   const { chosenTracks, recommendations, removeAll } = useRecommenderStore(
     (state) => state
   );
@@ -16,7 +18,7 @@ const Playlist = () => {
 
   const titles = {
     blue: ["Melancholy", "Gloomy", "Despondent"],
-    green: ["Moody", "Poignant", "Diverse"],
+    green: ["Moody", "Unpredictable", "Diverse"],
     yellow: ["Chill", "Cool", "Soothing"],
     red: ["Life Affirming", "Lively", "Exilharating"],
   };
@@ -24,25 +26,17 @@ const Playlist = () => {
   const getTitle = (name) => {
     if (targetValence < 0.5) {
       if (targetEnergy < 0.5) {
-        return `${
-          titles.blue[Math.floor(Math.random() * titles.blue.length)]
-        } ${name}`;
+        return `${titles.blue[rand * titles.blue.length]} ${name}`;
       }
-      return `${
-        titles.green[Math.floor(Math.random() * titles.green.length)]
-      } ${name}`;
+      return `${titles.green[rand * titles.green.length]} ${name}`;
     }
     if (targetEnergy < 0.5) {
-      return `${
-        titles.yellow[Math.floor(Math.random() * titles.yellow.length)]
-      } ${name}`;
+      return `${titles.yellow[rand * titles.yellow.length]} ${name}`;
     }
-    return `${
-      titles.red[Math.floor(Math.random() * titles.red.length)]
-    } ${name}`;
+    return `${titles.red[rand * titles.red.length]} ${name}`;
   };
   const final = last(recommendations) || [];
-  const playlist = uniq(chosenTracks.concat(final as any[]));
+  const playlist = uniqBy((x) => x?.id, chosenTracks.concat(final as any[]));
   const createPlaylist = trpc.spotify.postPlaylist.useMutation();
   const handleCreate = async () => {
     const tracks = pluck("uri", playlist);
@@ -54,11 +48,11 @@ const Playlist = () => {
 
   return (
     <>
-      <div className="my-16 text-center  text-white">
+      <div className="my-16 text-center text-white">
         <h3 className="text-lg font-bold">Your playlist is complete.</h3>
         <h1 className="text-xl font-bold">{getTitle(head(playlist).name)}</h1>
       </div>
-      <div className="mb-60 flex-col justify-center">
+      <div className="mx-auto mb-60 max-w-sm flex-col">
         {playlist?.map((track, index) => (
           <motion.div
             className="px-4"
@@ -70,18 +64,18 @@ const Playlist = () => {
             <Track track={track} />
           </motion.div>
         ))}
-        <div className="fixed bottom-0">
+        <div className="fixed left-0 bottom-0">
           <div className="h-20 bg-gradient-to-t from-[#504A6D] to-transparent"></div>
           <div className="flex w-screen flex-col items-center gap-4 bg-[#504A6D] p-4">
             {createPlaylist.isSuccess ? (
-              <button className="w-full max-w-sm rounded-full bg-[#ffc661] p-4 text-lg font-semibold text-[#504A6D]">
+              <button className="w-full max-w-sm rounded-full bg-[#ffda61] p-4 text-lg font-semibold text-[#504A6D]">
                 <a href={getLink()} target="_blank" rel="noreferrer">
                   Go to playlist
                 </a>
               </button>
             ) : (
               <button
-                className="w-full max-w-sm rounded-full bg-[#ffc661] p-4 text-lg font-semibold  text-[#504A6D]"
+                className="w-full max-w-sm rounded-full bg-[#ffda61] p-4 text-lg font-semibold  text-[#504A6D]"
                 onClick={handleCreate}
               >
                 Add playlist to Spotify

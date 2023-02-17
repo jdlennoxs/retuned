@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import AudioPreview from "./AudioPreview";
 
 interface TrackListingProps {
@@ -18,7 +18,7 @@ export const TrackListing = ({ track, isPlaying }: TrackListingProps) => {
         {track?.preview_url && (
           <AudioPreview isPlaying={isPlaying} url={track.preview_url} />
         )}
-        <Image
+        <img
           className="object pointer-events-none -z-10 overflow-hidden rounded-2xl  shadow-lg"
           height={480}
           width={480}

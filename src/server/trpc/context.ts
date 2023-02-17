@@ -35,8 +35,6 @@ export const createContext = async (opts: CreateNextContextOptions) => {
 
   spotify.setAccessToken(session?.accessToken || "");
 
-  console.log("createContext for", session?.user?.name ?? "unknown user");
-
   return await createContextInner({
     session,
     spotify,

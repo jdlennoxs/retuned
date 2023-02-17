@@ -1,7 +1,6 @@
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
-import { isEmpty, last, not, path, propEq, reject, uniqBy } from "ramda";
-import { useEffect } from "react";
+import { last, propEq, reject, uniqBy } from "ramda";
 
 import InfiniteCards from "../components/InfiniteCards";
 import Noise from "../components/Noise";
@@ -40,8 +39,8 @@ export default function Home() {
   const setRecommendations = useRecommenderStore(
     (state) => state.setRecommendations
   );
-  trpc.spotify.getRecommendations.useQuery(params, {
-    enabled: not(isEmpty(path(["seedTracks"], params))),
+  const { refetch } = trpc.spotify.getRecommendations.useQuery(params, {
+    enabled: false,
     onSuccess: (data) => {
       setRecommendations(
         reject(
@@ -52,9 +51,8 @@ export default function Home() {
     },
   });
 
-  const recommendations = useRecommenderStore((state) => state.recommendations);
-  const chosenTracks = useRecommenderStore((state) => state.chosenTracks);
-  const setFeatures = useRecommenderStore((state) => state.setFeatures);
+  const { recommendations, chosenTracks, setFeatures, step } =
+    useRecommenderStore();
   trpc.spotify.getTrackFeatures.useQuery(last(chosenTracks)?.id || "", {
     enabled: !!last(chosenTracks)?.id,
     onSuccess: (data) => {
@@ -77,7 +75,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.svg" />
       </Head>
       <Noise />
-      {/* -gradient-to-b from  to-[#393359]  */}
       <main className="min-h-screen overflow-hidden bg-[#504A6D] ">
         {!session ? (
           <>
@@ -88,7 +85,7 @@ export default function Home() {
         ) : (
           <>
             <UserInfo />
-            {recommendations.length === 4 ? (
+            {step === "Finished" ? (
               <Playlist />
             ) : (
               <>
@@ -96,12 +93,14 @@ export default function Home() {
                   <>Loading</>
                 ) : (
                   <InfiniteCards
-                    tracks={shuffle(
-                      uniqBy((x) => x?.id, listenedTracks.concat(likedTracks))
+                    tracks={uniqBy(
+                      (x) => x?.id,
+                      listenedTracks.concat(likedTracks)
                     )}
                     recommendations={
                       chosenTracks.length > 1 ? last(recommendations) || [] : []
                     }
+                    getRecommendations={refetch}
                   />
                 )}
               </>

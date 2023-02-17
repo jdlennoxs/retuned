@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { pluck } from "ramda";
 import ReactHoverObserver from "react-hover-observer";
@@ -22,7 +23,7 @@ export const Track = ({ track }: ArtistListingProps) => {
               <AudioPreview isPlaying={isHovering} url={track?.preview_url} />
             )}
             <div className="flex items-center p-2">
-              <Image
+              <img
                 className="h-14 w-14 object-cover shadow-sm"
                 height="56"
                 width="56"

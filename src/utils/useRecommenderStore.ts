@@ -1,8 +1,12 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
+const Steps = ["Start", "First", "Second", "Third", "Finished"] as const;
+type Step = typeof Steps[number];
+
 interface RecommenderState {
   offsets: any;
+  step: Step;
   chosenTracks: SpotifyApi.TrackObjectFull[];
   addChosenTrack: (track: SpotifyApi.TrackObjectFull) => void;
   recommendations: SpotifyApi.RecommendationTrackObject[][];
@@ -11,6 +15,7 @@ interface RecommenderState {
   ) => void;
   features: SpotifyApi.AudioFeaturesResponse[];
   setFeatures: (features: SpotifyApi.AudioFeaturesResponse) => void;
+  setStep: (nextStep: Step) => void;
   removeAll: () => void;
 }
 
@@ -29,6 +34,11 @@ const useRecommenderStore = create<RecommenderState>()(
       chosenTracks: [],
       features: [],
       recommendations: [],
+      step: "Start",
+      setStep: (nextStep) =>
+        set({
+          step: nextStep,
+        }),
       addChosenTrack: (track) =>
         set((state) => ({
           chosenTracks: [...state.chosenTracks, track],
@@ -43,6 +53,7 @@ const useRecommenderStore = create<RecommenderState>()(
         })),
       removeAll: () =>
         set({
+          step: "Start",
           chosenTracks: [],
           features: [],
           recommendations: [],

@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 //["#8f83d8", "#393359", "#ffc661"]
 const Playlist = () => {
-  const [rand] = useState(Math.floor(Math.random()));
+  const [rand] = useState(Math.random());
   const { chosenTracks, recommendations, removeAll } = useRecommenderStore(
     (state) => state
   );
@@ -17,23 +17,25 @@ const Playlist = () => {
   );
 
   const titles = {
-    blue: ["Melancholy", "Gloomy", "Despondent"],
-    green: ["Moody", "Unpredictable", "Diverse"],
-    yellow: ["Chill", "Cool", "Soothing"],
-    red: ["Life Affirming", "Lively", "Exilharating"],
+    blue: ["Melancholy", "Gloomy", "Despondent", "Bleak"],
+    green: ["Moody", "Unpredictable", "Diverse", "Jagged"],
+    yellow: ["Chill", "Cool", "Soothing", "Fresh"],
+    red: ["Life Affirming", "Lively", "Exilharating", "Upbeat"],
   };
 
   const getTitle = (name) => {
     if (targetValence < 0.5) {
       if (targetEnergy < 0.5) {
-        return `${titles.blue[rand * titles.blue.length]} ${name}`;
+        return `${titles.blue[Math.floor(rand * titles.blue.length)]} ${name}`;
       }
-      return `${titles.green[rand * titles.green.length]} ${name}`;
+      return `${titles.green[Math.floor(rand * titles.green.length)]} ${name}`;
     }
     if (targetEnergy < 0.5) {
-      return `${titles.yellow[rand * titles.yellow.length]} ${name}`;
+      return `${
+        titles.yellow[Math.floor(rand * titles.yellow.length)]
+      } ${name}`;
     }
-    return `${titles.red[rand * titles.red.length]} ${name}`;
+    return `${titles.red[Math.floor(rand * titles.red.length)]} ${name}`;
   };
   const final = last(recommendations) || [];
   const playlist = uniqBy((x) => x?.id, chosenTracks.concat(final as any[]));

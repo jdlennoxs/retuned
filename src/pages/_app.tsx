@@ -5,21 +5,29 @@ import { getSession, SessionProvider, signIn } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
-import { useEffect } from "react";
+import Head from "next/head";
+import Noise from "../components/Noise";
+import UserInfo from "../components/UserInfo";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  useEffect(() => {
-    if (session?.error === "RefreshAccessTokenError") {
-      signIn(); // Force sign in to hopefully resolve error
-    }
-  }, [session]);
-
   return (
     <SessionProvider session={session}>
-      <Component {...pageProps} />
+      <Head>
+        <title>Re:Tuned</title>
+        <meta
+          name="description"
+          content="Discover your new musical obsession"
+        />
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <Noise />
+      <main className="min-h-screen overflow-hidden bg-[#504A6D] ">
+        <UserInfo />
+        <Component {...pageProps} />
+      </main>
     </SessionProvider>
   );
 };

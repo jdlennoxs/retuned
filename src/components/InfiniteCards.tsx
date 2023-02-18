@@ -10,29 +10,14 @@ import TrackCard from "./TrackCard";
 const SWIPE_MIN = 100;
 
 const InfiniteCards = ({
-  tracks,
-  // recommendations = [],
-  getRecommendations,
+  seedTracks,
 }: {
-  tracks: any[];
-  recommendations: SpotifyApi.RecommendationTrackObject[];
-  getRecommendations: any;
+  seedTracks: SpotifyApi.TrackObjectFull[];
 }) => {
-  const { addChosenTrack, step, setStep, recommendations } =
-    useRecommenderStore();
-  const [cardAt, setCardAt] = useState(3);
-  const [cards, setCards] = useState([tracks[2], tracks[1], tracks[0]]);
+  const { addChosenTrack } = useRecommenderStore();
 
-  const getRecommendationsForStep = () => {
-    console.log(step);
-    if (step === "First" || step === "Start" || step === "Third") {
-      getRecommendations();
-    }
-  };
-
-  // useEffect(() => {
-  //   tracks.splice(cardAt, 0, ...recommendations);
-  // }, [recommendations, tracks]);
+  const [cardAt, setCardAt] = useState(2);
+  const [cards, setCards] = useState([seedTracks[1], seedTracks[0]]);
 
   const [dragStart, setDragStart] = useState({
     axis: "null",
@@ -40,20 +25,24 @@ const InfiniteCards = ({
   });
 
   const x = useMotionValue(0);
+
   const scale = useTransform(x, [-SWIPE_MIN, 0, SWIPE_MIN], [1, 0.5, 1]);
+
   const cardOpacity = useTransform(
     x,
     [-SWIPE_MIN * 2, -SWIPE_MIN, 0, SWIPE_MIN, SWIPE_MIN * 2],
     [0, 1, 1, 1, 0]
   );
+
   const onDirectionLock = (axis: string) =>
     setDragStart({ ...dragStart, axis: axis });
+
   const animateCardSwipe = (animation: { x: number; y: number }) => {
     setDragStart({ ...dragStart, animation });
     setTimeout(() => {
       setDragStart({ axis: "null", animation: { x: 0, y: 0 } });
       x.set(0);
-      setCards([tracks[cardAt], ...cards.slice(0, cards.length - 1)]);
+      setCards([seedTracks[cardAt], ...cards.slice(0, cards.length - 1)]);
       setCardAt(cardAt + 1);
     }, 400);
   };
@@ -62,8 +51,7 @@ const InfiniteCards = ({
     if (info.offset.x >= SWIPE_MIN) {
       animateCardSwipe({ x: SWIPE_MIN * 2, y: 0 });
       addChosenTrack(card);
-      iterateStep({ step, setStep });
-      setTimeout(() => getRecommendationsForStep(), undefined);
+      iterateStep();
     } else if (info.offset.x <= -SWIPE_MIN)
       animateCardSwipe({ x: -SWIPE_MIN * 2, y: 0 });
   };
@@ -75,7 +63,7 @@ const InfiniteCards = ({
           <TrackCard
             drag="x"
             card={card}
-            key={card.id}
+            key={card?.id}
             style={{
               x,
               zIndex: index,
@@ -91,7 +79,7 @@ const InfiniteCards = ({
         return (
           <TrackCard
             card={card}
-            key={card.id}
+            key={card?.id}
             style={{
               scale,
               zIndex: index,
@@ -105,7 +93,7 @@ const InfiniteCards = ({
   };
 
   return (
-    <div className="relative z-20 m-auto flex justify-center">
+    <>
       <motion.div
         className="flex justify-center"
         animate={{ opacity: 1, y: 0 }}
@@ -123,7 +111,7 @@ const InfiniteCards = ({
           {pluck("name")(last(cards).artists).join(", ")}
         </h3>
       </div>
-    </div>
+    </>
   );
 };
 

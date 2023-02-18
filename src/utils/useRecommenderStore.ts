@@ -7,6 +7,7 @@ type Step = typeof Steps[number];
 interface RecommenderState {
   offsets: any;
   step: Step;
+  hasSeedTracks: boolean;
   chosenTracks: SpotifyApi.TrackObjectFull[];
   addChosenTrack: (track: SpotifyApi.TrackObjectFull) => void;
   recommendations: SpotifyApi.RecommendationTrackObject[][];
@@ -17,6 +18,9 @@ interface RecommenderState {
   setFeatures: (features: SpotifyApi.AudioFeaturesResponse) => void;
   setStep: (nextStep: Step) => void;
   removeAll: () => void;
+  seedTracks: SpotifyApi.TrackObjectFull[];
+  setSeedTracks: (tracks: SpotifyApi.TrackObjectFull[]) => void;
+  setHasSeedTracks: () => void;
 }
 
 const LIMIT = 10;
@@ -31,6 +35,8 @@ const useRecommenderStore = create<RecommenderState>()(
         mediumOffset: Math.floor(Math.random() * (50 - LIMIT)),
         shortOffset: Math.floor(Math.random() * (50 - LIMIT)),
       },
+      hasSeedTracks: false,
+      seedTracks: [],
       chosenTracks: [],
       features: [],
       recommendations: [],
@@ -51,6 +57,8 @@ const useRecommenderStore = create<RecommenderState>()(
         set((state) => ({
           recommendations: [...state.recommendations, recommendations],
         })),
+      setSeedTracks: (tracks) => set({ seedTracks: tracks }),
+      setHasSeedTracks: () => set({ hasSeedTracks: true }),
       removeAll: () =>
         set({
           step: "Start",

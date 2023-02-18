@@ -17,6 +17,7 @@ export const spotifyRouter = router({
       return await ctx.spotify.getMyTopTracks({
         time_range: input.timeRange,
         limit: input.limit || 50,
+        offset: input.offset || 0,
       });
     }),
   getUserTopArtists: protectedProcedure
@@ -75,7 +76,7 @@ export const spotifyRouter = router({
     .query(async ({ ctx, input }) => {
       return await ctx.spotify.getMyRecentlyPlayedTracks({
         limit: input.limit || 10,
-        before: new Date().getTime() - 24 * 60 * 60 * 1000,
+        before: new Date().setHours(0, 0, 0, 0).valueOf(),
       });
     }),
   postPlaylist: protectedProcedure

@@ -1,15 +1,18 @@
-const iterateStep = ({ step, setStep }) => {
+import useRecommenderStore from "./useRecommenderStore";
+
+const iterateStep = () => {
+  const step = useRecommenderStore.getState().step;
   if (step === "Start") {
-    setStep("First");
+    useRecommenderStore.setState({ step: "First" });
   }
   if (step === "First") {
-    setStep("Second");
+    useRecommenderStore.setState({ step: "Second" });
   }
   if (step === "Second") {
-    setStep("Third");
+    useRecommenderStore.setState({ step: "Third" });
   }
   if (step === "Third") {
-    setStep("Finished");
+    useRecommenderStore.setState({ step: "Finished" });
   }
 };
 

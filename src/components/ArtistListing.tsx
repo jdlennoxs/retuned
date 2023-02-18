@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
 import { pluck } from "ramda";
 import ReactHoverObserver from "react-hover-observer";
 import AudioPreview from "./AudioPreview";

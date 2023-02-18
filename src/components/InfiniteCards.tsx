@@ -16,6 +16,7 @@ const InfiniteCards = ({
 }: {
   tracks: any[];
   recommendations: SpotifyApi.RecommendationTrackObject[];
+  getRecommendations: any;
 }) => {
   const { addChosenTrack, step, setStep, recommendations } =
     useRecommenderStore();

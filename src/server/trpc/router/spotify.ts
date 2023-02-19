@@ -1,6 +1,6 @@
-import { number, z } from "zod";
+import { z } from "zod";
 
-import { router, protectedProcedure } from "../trpc";
+import { protectedProcedure, router } from "../trpc";
 
 export const time_range = z.enum(["long_term", "medium_term", "short_term"]);
 
@@ -19,19 +19,6 @@ export const spotifyRouter = router({
         limit: input.limit || 50,
         offset: input.offset || 0,
       });
-    }),
-  getUserTopArtists: protectedProcedure
-    .input(time_range)
-    .query(async ({ ctx, input }) => {
-      return await ctx.spotify.getMyTopArtists({
-        time_range: input,
-        limit: 50,
-      });
-    }),
-  getArtistTopTracks: protectedProcedure
-    .input(z.string())
-    .query(async ({ ctx, input }) => {
-      return await ctx.spotify.getArtistTopTracks(input, "GB");
     }),
   getRecommendations: protectedProcedure
     .input(

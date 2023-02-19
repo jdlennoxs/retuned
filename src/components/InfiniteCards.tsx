@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { head, last, map, pipe, pluck, propEq, reject } from "ramda";
+import { head, last, map, pluck, propEq, reject } from "ramda";
 import iterateStep from "../utils/iterateStep";
 import useRecommenderStore from "../utils/useRecommenderStore";
 import SwipeIndicator from "./SwipeIndicator";
@@ -51,9 +51,7 @@ const InfiniteCards = ({
       last(recommendations).length > recommendationAt
     ) {
       setCards([
-        last(reject(propEq("preview_url", null), recommendationAt))[
-          recommendationAt
-        ],
+        last(recommendations)[recommendationAt],
         ...cards.slice(0, cards.length - 1),
       ]);
       setRecommendationAt(recommendationAt + 1);

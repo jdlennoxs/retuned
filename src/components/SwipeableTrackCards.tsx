@@ -5,6 +5,7 @@ import { useGetLikedTracksQuery } from "../utils/useGetLikedTracksQuery";
 import { useGetListenedTracksQuery } from "../utils/useGetListenedTracksQuery";
 import useRecommenderStore from "../utils/useRecommenderStore";
 import InfiniteCards from "./InfiniteCards";
+import Loading from "./Loading";
 
 const SwipeableTrackCards = () => {
   const { hasSeedTracks, seedTracks, setHasSeedTracks, setSeedTracks } =
@@ -33,7 +34,7 @@ const SwipeableTrackCards = () => {
 
   return (
     <div className="relative z-20 m-auto flex justify-center">
-      {hasSeedTracks ? <InfiniteCards seedTracks={seedTracks} /> : <>Loading</>}
+      {hasSeedTracks ? <InfiniteCards seedTracks={seedTracks} /> : <Loading />}
     </div>
   );
 };

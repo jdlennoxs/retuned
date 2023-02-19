@@ -22,6 +22,7 @@ module.exports = {
       },
       animation: {
         noise: "noise 10s steps(10) infinite",
+        "bounce-slow": "bounce 3s infinite",
       },
     },
   },

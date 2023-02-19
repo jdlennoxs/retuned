@@ -23,8 +23,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
         />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <Noise />
-      <main className="min-h-screen overflow-hidden bg-[#504A6D] ">
+      {/* <Noise /> */}
+      <main className="min-h-screen overflow-hidden bg-[#504A6D]">
         <UserInfo />
         <Component {...pageProps} />
       </main>

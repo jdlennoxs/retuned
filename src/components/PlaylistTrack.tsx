@@ -12,7 +12,7 @@ const getImageSize = (images: SpotifyApi.ImageObject[], size = 300) => {
   return img?.url || "";
 };
 
-export const Track = ({ track }: ArtistListingProps) => {
+export const PlaylistTrack = ({ track }: ArtistListingProps) => {
   return (
     <div>
       <ReactHoverObserver className={`m-auto max-w-xl overflow-hidden`}>

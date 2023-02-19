@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const AudioPreview = ({
   url,
@@ -10,10 +10,12 @@ const AudioPreview = ({
   const audioRef = useRef(new Audio(url));
   const intervalRef = useRef();
   useEffect(() => {
+    const currentAudio = audioRef.current;
+    const currentInterval = intervalRef.current;
     // Pause and clean up on unmount
     return () => {
-      audioRef.current.pause();
-      clearInterval(intervalRef.current);
+      currentAudio.pause();
+      clearInterval(currentInterval);
     };
   }, []);
 

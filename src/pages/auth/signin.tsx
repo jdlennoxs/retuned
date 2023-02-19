@@ -10,15 +10,37 @@ export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <>
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <button onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
-          </button>
+    <div className="absolute  flex h-screen w-screen">
+      <div className="relative z-30 m-auto place-items-center ">
+        <div className="flex flex-col gap-4 rounded-lg bg-white p-8 text-lg shadow-lg sm:max-w-sm">
+          <h1 className="my-2 text-3xl text-[#8f83d8]">
+            Re:<span className="font-semibold text-[#504A6D]">Tuned</span>
+          </h1>
+          <p>An easy way to discover new music.</p>
+          <p>
+            We tailor recommendations from your current library with what you
+            want to hear right now.
+          </p>
+          <p>
+            Simply swipe <strong>right</strong> on tracks you&apos;re feeling,
+            and <strong>left</strong> on those you&apos;re not and we&apos;ll
+            generate a playlist you can add to Spotify.
+          </p>
+          <p>Hold down to hear a snippet of the track before you swipe!</p>
+
+          {Object.values(providers).map((provider) => (
+            <div key={provider.name}>
+              <button
+                className="my-2 w-full max-w-sm rounded-full bg-[#ffda61] p-4 text-lg font-semibold text-[#504A6D]"
+                onClick={() => signIn(provider.id)}
+              >
+                Sign in with {provider.name}
+              </button>
+            </div>
+          ))}
         </div>
-      ))}
-    </>
+      </div>
+    </div>
   );
 }
 

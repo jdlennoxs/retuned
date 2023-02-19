@@ -98,16 +98,16 @@ const InfiniteCards = ({
         className="flex justify-center"
         animate={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: 100 }}
-        transition={{ ease: "easeOut", duration: 1, delay: 1 }}
+        transition={{ ease: "easeOut", duration: 1, delay: 0.5 }}
       >
         {renderCards()}
       </motion.div>
       <div className="fixed top-16 justify-center">
         <SwipeIndicator x={x} swipeMin={SWIPE_MIN} />
       </div>
-      <div className="fixed bottom-16 z-0 text-center">
-        <h1 className="text-lg font-semibold text-white">{last(cards).name}</h1>
-        <h3 className="font-semibold text-[#e3e1e4]">
+      <div className="fixed bottom-16 text-center font-semibold">
+        <h1 className="text-lg text-white">{last(cards).name}</h1>
+        <h3 className="text-[#e3e1e4]">
           {pluck("name")(last(cards).artists).join(", ")}
         </h3>
       </div>

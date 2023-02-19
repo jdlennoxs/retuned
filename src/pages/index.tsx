@@ -45,5 +45,15 @@ export default function Home() {
   // #8e88a1
   // #8f83d8
   // #e3e1e4
-  return <>{step === "Finished" ? <Playlist /> : <SwipeableTrackCards />}</>;
+  return (
+    <>
+      {step === "Finished" ? (
+        <Playlist />
+      ) : (
+        <div className="fixed top-14 left-0 right-0 bottom-0 z-30">
+          <SwipeableTrackCards />
+        </div>
+      )}
+    </>
+  );
 }

@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { TrackListing } from "./TrackListing";
+import AudioPreview from "./AudioPreview";
 
 interface CardProps {
   card: any;
@@ -12,6 +13,11 @@ interface CardProps {
   initial?: any;
   transition?: any;
 }
+
+const getImageSize = (images: SpotifyApi.ImageObject[], size = 640) => {
+  const img = images.find((image) => image.height === size) || images[0];
+  return img?.url || "";
+};
 
 const TrackCard = ({
   card,
@@ -26,7 +32,7 @@ const TrackCard = ({
   const [isPointerDown, setIsPointerDown] = useState(false);
   return (
     <motion.div
-      className="absolute flex h-screen w-screen"
+      className="absolute flex h-[90vh] w-screen"
       drag={drag}
       dragConstraints={{ left: 0, right: 0 }}
       dragDirectionLock
@@ -40,7 +46,18 @@ const TrackCard = ({
       onPointerUp={() => setIsPointerDown(false)}
       initial={initial}
     >
-      <TrackListing track={card} key={card.id} isPlaying={isPointerDown} />
+      <div className={"relative m-auto place-items-center p-2"}>
+        {card.preview_url && (
+          <AudioPreview isPlaying={isPointerDown} url={card.preview_url} />
+        )}
+        <img
+          className="object pointer-events-none overflow-hidden rounded-2xl  shadow-lg"
+          height={480}
+          width={480}
+          src={getImageSize(card.album.images)}
+          alt=""
+        />
+      </div>
     </motion.div>
   );
 };

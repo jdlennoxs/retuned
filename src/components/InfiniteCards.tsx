@@ -70,7 +70,7 @@ const InfiniteCards = ({
       x.set(0);
       setNextCards();
       setCardAt(cardAt + 1);
-    }, 400);
+    }, 300);
   };
 
   const onDragEnd = (info, card) => {

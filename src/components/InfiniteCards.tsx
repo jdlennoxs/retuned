@@ -138,10 +138,10 @@ const InfiniteCards = ({
           {pluck("name")(last(cards).artists).join(", ")}
         </h3>
         <a
-          className="flex justify-center gap-2 p-4 text-[#1ed760]"
+          className="flex justify-center gap-2 p-4 text-[white]"
           href={`https://open.spotify.com/track/${last(cards).id}`}
         >
-          <img className="h-6" src="/spotify.png" alt="Spotify logo" />
+          <img className="h-6" src="/spotify-white.png" alt="Spotify logo" />
           OPEN SPOTIFY
         </a>
       </div>

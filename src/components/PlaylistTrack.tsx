@@ -21,21 +21,30 @@ export const PlaylistTrack = ({ track }: ArtistListingProps) => {
             {track?.preview_url && (
               <AudioPreview isPlaying={isHovering} url={track?.preview_url} />
             )}
-            <div className="flex items-center p-2">
+            <div className="flex items-center gap-2 p-2">
               <img
-                className="h-14 w-14 object-cover shadow-sm"
+                className="h-24 w-24 object-cover shadow-sm"
                 height="56"
                 width="56"
                 src={getImageSize(track.album.images)}
                 alt=""
               />
-              <div className="m-2 flex flex-col">
-                <h1 className="text-lg font-semibold text-white">
-                  {track.name}
-                </h1>
-                <h3 className="font-semibold text-[#e3e1e4]">
+              <div className=" flex flex-col">
+                <h1 className="font-semibold text-white">{track.name}</h1>
+                <h3 className=" text-[#e3e1e4]">
                   {pluck("name", track.artists).join(", ")}
                 </h3>
+                <a
+                  className="flex gap-2 py-2 text-[white]"
+                  href={`https://open.spotify.com/track/${track.id}`}
+                >
+                  <img
+                    className="h-6"
+                    src="/spotify-white.png"
+                    alt="Spotify logo"
+                  />
+                  <span>PLAY ON SPOTIFY</span>
+                </a>
               </div>
             </div>
           </>

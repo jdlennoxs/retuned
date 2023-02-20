@@ -31,15 +31,15 @@ export default function SignIn({
           {Object.values(providers).map((provider) => (
             <div key={provider.name}>
               <button
-                className="my-2 flex w-full max-w-sm justify-center gap-2 rounded-full bg-[#ffda61] p-4 text-lg font-semibold text-[#504A6D]"
+                className="my-2 flex w-full max-w-sm justify-center gap-2 rounded-full bg-[#1ed760] p-4 text-lg font-semibold text-[white]"
                 onClick={() => signIn(provider.id)}
               >
                 <img
                   className="h-6"
-                  src="/spotify-mono.png"
+                  src="/spotify-white.png"
                   alt="Spotify logo"
                 />
-                Sign in with {provider.name}
+                SIGN IN WITH SPOTIFY
               </button>
             </div>
           ))}

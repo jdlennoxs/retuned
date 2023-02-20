@@ -1,5 +1,5 @@
 import { signIn, useSession } from "next-auth/react";
-import { last, propEq, reject } from "ramda";
+import { last } from "ramda";
 import { useEffect } from "react";
 import Playlist from "../components/Playlist";
 import SwipeableTrackCards from "../components/SwipeableTrackCards";

@@ -63,14 +63,19 @@ const Playlist = () => {
               <div className="h-20 bg-gradient-to-t from-[#504A6D] to-transparent"></div>
               <div className="flex w-screen flex-col items-center gap-4 bg-[#504A6D] p-4">
                 {createPlaylist.isSuccess ? (
-                  <button className="w-full max-w-sm rounded-full bg-[#ffda61] p-4 text-lg font-semibold text-[#504A6D]">
+                  <button className="flex w-full max-w-sm gap-2 rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D]">
                     <a href={getLink()} target="_blank" rel="noreferrer">
-                      Go to playlist
+                      <img
+                        className="h-6"
+                        src="/spotify.png"
+                        alt="Spotify logo"
+                      />
+                      OPEN SPOTIFY
                     </a>
                   </button>
                 ) : (
                   <button
-                    className="flex w-full max-w-sm justify-center rounded-full bg-[#ffda61] p-4 text-lg  font-semibold text-[#504A6D]"
+                    className="flex w-full max-w-sm justify-center gap-2 rounded-full bg-[white] p-4 text-lg  font-semibold text-[#504A6D]"
                     onClick={handleCreate}
                   >
                     {createPlaylist.isLoading ? (
@@ -90,7 +95,14 @@ const Playlist = () => {
                         />
                       </svg>
                     ) : (
-                      `Add playlist to Spotify`
+                      <>
+                        <img
+                          className="h-6"
+                          src="/spotify.png"
+                          alt="Spotify logo"
+                        />
+                        ADD TO SPOTIFY
+                      </>
                     )}
                   </button>
                 )}
@@ -98,7 +110,7 @@ const Playlist = () => {
                   className="w-full max-w-sm rounded-full bg-[#8f83d8] p-4 text-lg font-semibold  text-white"
                   onClick={removeAll}
                 >
-                  Start again
+                  START AGAIN
                 </button>
               </div>
             </div>

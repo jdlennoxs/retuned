@@ -139,7 +139,7 @@ const InfiniteCards = ({
         </h3>
         <a
           className="flex justify-center gap-2 p-4 text-[white]"
-          href={`https://open.spotify.com/track/${last(cards).id}`}
+          href={last(cards).uri}
         >
           <img className="h-6" src="/spotify-white.png" alt="Spotify logo" />
           OPEN SPOTIFY

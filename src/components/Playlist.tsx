@@ -32,9 +32,6 @@ const Playlist = () => {
     createPlaylist.mutate({ tracks, name: title });
   };
 
-  const getLink = () =>
-    `https://open.spotify.com/playlist/${createPlaylist.data}`;
-
   return (
     <>
       {recommendations.length !== 3 ? (
@@ -63,8 +60,11 @@ const Playlist = () => {
               <div className="h-20 bg-gradient-to-t from-[#504A6D] to-transparent"></div>
               <div className="flex w-screen flex-col items-center gap-4 bg-[#504A6D] p-4">
                 {createPlaylist.isSuccess ? (
-                  <button className="flex w-full max-w-sm gap-2 rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D]">
-                    <a href={getLink()} target="_blank" rel="noreferrer">
+                  <button className="w-full max-w-sm  rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D]">
+                    <a
+                      href={createPlaylist.data}
+                      className="flex justify-center gap-2"
+                    >
                       <img
                         className="h-6"
                         src="/spotify.png"

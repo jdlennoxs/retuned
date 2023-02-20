@@ -71,6 +71,6 @@ export const spotifyRouter = router({
     .mutation(async ({ ctx, input }) => {
       const res = await ctx.spotify.createPlaylist(input.name);
       await ctx.spotify.addTracksToPlaylist(res.body.id, input.tracks);
-      return res.body.id;
+      return res.body.uri;
     }),
 });

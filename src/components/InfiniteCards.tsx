@@ -137,15 +137,13 @@ const InfiniteCards = ({
         <h3 className="text-[#e3e1e4]">
           {pluck("name")(last(cards).artists).join(", ")}
         </h3>
-        <button className="z-40 m-4 rounded-full bg-white p-4 text-black">
-          <a
-            className="flex gap-2"
-            href={`https://open.spotify.com/track/${last(cards).id}`}
-          >
-            <img className="h-6" src="/spotify.png" alt="Spotify logo" />
-            OPEN SPOTIFY
-          </a>
-        </button>
+        <a
+          className="flex justify-center gap-2 p-4 text-[#1ed760]"
+          href={`https://open.spotify.com/track/${last(cards).id}`}
+        >
+          <img className="h-6" src="/spotify.png" alt="Spotify logo" />
+          OPEN SPOTIFY
+        </a>
       </div>
     </>
   );

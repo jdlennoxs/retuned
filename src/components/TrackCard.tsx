@@ -32,7 +32,7 @@ const TrackCard = ({
   const [isPointerDown, setIsPointerDown] = useState(false);
   return (
     <motion.div
-      className="absolute flex h-[90vh] w-screen"
+      className="absolute flex h-[80vh] w-screen"
       drag={drag}
       dragConstraints={{ left: 0, right: 0 }}
       dragDirectionLock
@@ -51,7 +51,7 @@ const TrackCard = ({
           <AudioPreview isPlaying={isPointerDown} url={card.preview_url} />
         )}
         <img
-          className="object pointer-events-none overflow-hidden rounded-2xl  shadow-lg"
+          className="object pointer-events-none overflow-hidden shadow-lg"
           height={480}
           width={480}
           src={getImageSize(card.album.images)}

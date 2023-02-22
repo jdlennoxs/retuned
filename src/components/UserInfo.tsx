@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { useSession, signOut } from "next-auth/react";
 
-const UserInfo = () => {
+const UserInfo = ({ openInfo, isOpen }) => {
   const { data: session, status } = useSession();
   return (
     <>
       {status === "authenticated" ? (
         <div className="fixed top-0 w-full bg-[#504A6D] p-2 text-xl text-white">
           <div className="flex items-center justify-between">
-            <div>
+            <div className="cursor-pointer" onClick={() => openInfo(true)}>
               Re:<span className="font-semibold">Tuned</span>
             </div>
             <div className="flex gap-2">

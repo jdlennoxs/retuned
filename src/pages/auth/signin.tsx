@@ -10,28 +10,32 @@ export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <div className="absolute  flex h-screen w-screen">
+    <div className="absolute flex h-screen w-screen">
       <div className="relative z-30 m-auto place-items-center ">
-        <div className="flex flex-col gap-4 rounded-lg bg-white p-8 text-lg shadow-lg sm:max-w-sm">
+        <div className="flex flex-col gap-4 rounded-lg bg-white p-12 text-lg text-[#504A6D] shadow-lg sm:max-w-sm">
           <h1 className="my-2 text-3xl text-[#8f83d8]">
             Re:<span className="font-semibold text-[#504A6D]">Tuned</span>
           </h1>
-          <p>An easy way to discover new music.</p>
-          <p>
-            We tailor recommendations from your current library with what you
-            want to hear right now.
-          </p>
+          <h3 className="-mt-4 font-semibold text-[#8f83d8]">
+            Match with new music just for you.
+          </h3>
+          <p>Get a tailored playlist of new music based on your library.</p>
           <p>
             Simply swipe <strong>right</strong> on tracks you&apos;re feeling,
             and <strong>left</strong> on those you&apos;re not and we&apos;ll
             generate a playlist you can add to Spotify.
           </p>
-          <p>Hold down to hear a snippet of the track before you swipe!</p>
+          <p>Hold down to hear a snippet of the track before you swipe.</p>
+          <p>
+            For better results try to keep your choices similar. e.g. Ballads,
+            upbeat songs, dance music.
+          </p>
+          <p>Get started by logging in with Spotify.</p>
 
           {Object.values(providers).map((provider) => (
             <div key={provider.name}>
               <button
-                className="my-2 flex w-full max-w-sm justify-center gap-2 rounded-full bg-[#1ed760] p-4 text-lg font-semibold text-[white]"
+                className="my-2 flex w-full max-w-sm justify-center gap-2 rounded-full bg-[#1ed760] p-4 text-lg font-semibold text-[white] hover:scale-105 active:scale-95"
                 onClick={() => signIn(provider.id)}
               >
                 <img

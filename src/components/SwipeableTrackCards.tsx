@@ -33,7 +33,7 @@ const SwipeableTrackCards = () => {
   ]);
 
   return (
-    <div className="relative z-20 m-auto flex justify-center">
+    <div className="relative z-20 m-auto mt-32 flex justify-center">
       {hasSeedTracks ? <InfiniteCards seedTracks={seedTracks} /> : <Loading />}
     </div>
   );

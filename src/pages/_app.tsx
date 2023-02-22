@@ -1,32 +1,29 @@
-import { type AppType } from "next/app";
 import { type Session } from "next-auth";
-import { getSession, SessionProvider, signIn } from "next-auth/react";
+import { getSession, SessionProvider } from "next-auth/react";
+import { type AppType } from "next/app";
 
 import { trpc } from "../utils/trpc";
 
-import "../styles/globals.css";
 import Head from "next/head";
-import Noise from "../components/Noise";
 import UserInfo from "../components/UserInfo";
+import "../styles/globals.css";
+import { useState } from "react";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <SessionProvider session={session}>
       <Head>
         <title>Re:Tuned</title>
-        <meta
-          name="description"
-          content="Discover your new musical obsession"
-        />
+        <meta name="description" content="Match with new music just for you" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      {/* <Noise /> */}
       <main className="min-h-screen overflow-hidden bg-[#504A6D]">
-        <UserInfo />
-        <Component {...pageProps} />
+        <UserInfo openInfo={setIsOpen} isOpen={isOpen} />
+        <Component {...pageProps} isOpen={isOpen} closeInfo={setIsOpen} />
 
         <div className="fixed right-0 bottom-0 p-2">
           <span className="text-xs text-white">Created by Jack Scott</span>

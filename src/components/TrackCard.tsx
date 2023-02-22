@@ -32,7 +32,7 @@ const TrackCard = ({
   const [isPointerDown, setIsPointerDown] = useState(false);
   return (
     <motion.div
-      className="absolute flex h-[80vh] w-screen"
+      className="absolute flex h-[70vh] w-screen"
       drag={drag}
       dragConstraints={{ left: 0, right: 0 }}
       dragDirectionLock

@@ -1,6 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { last } from "ramda";
 import { useEffect } from "react";
+import Info from "../components/Info";
 import Playlist from "../components/Playlist";
 import SwipeableTrackCards from "../components/SwipeableTrackCards";
 import recommendationParamSelector from "../utils/recommendationParameterSelector";
@@ -8,7 +9,7 @@ import recommendationParamSelector from "../utils/recommendationParameterSelecto
 import { trpc } from "../utils/trpc";
 import useRecommenderStore from "../utils/useRecommenderStore";
 
-export default function Home() {
+export default function Home({ isOpen, closeInfo }) {
   const { status } = useSession();
   const { chosenTracks, setFeatures, step, features } = useRecommenderStore();
   useEffect(() => {
@@ -42,6 +43,7 @@ export default function Home() {
 
   return (
     <>
+      {isOpen && <Info closeInfo={closeInfo} />}
       {!isFinished && <SwipeableTrackCards />}
       {isFinished && <Playlist isLoading={isFetching} />}
     </>

@@ -39,7 +39,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
         <h1 className="text-xl font-bold">{title}</h1>
       </div>
       {isLoading ? (
-        <div className="-m-52 flex justify-center">
+        <div className="flex justify-center">
           <Loading />
         </div>
       ) : (

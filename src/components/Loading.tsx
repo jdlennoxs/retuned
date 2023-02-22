@@ -1,7 +1,7 @@
 export default function Loading() {
   return (
     <>
-      <div className="absolute flex h-screen w-screen">
+      <div className="absolute -m-52 flex h-screen w-screen">
         <div className="relative m-auto place-items-center ">
           <svg
             xmlns="http://www.w3.org/2000/svg"

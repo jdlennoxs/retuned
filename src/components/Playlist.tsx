@@ -61,7 +61,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
         <div className="h-20 bg-gradient-to-t from-[#504A6D] to-transparent"></div>
         <div className="flex w-screen flex-col items-center gap-4 bg-[#504A6D] p-4 pb-8">
           {createPlaylist.isSuccess ? (
-            <button className="w-full max-w-sm rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D]">
+            <button className="w-full max-w-sm rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D] hover:scale-105 active:scale-95">
               <a
                 href={createPlaylist.data}
                 className="flex justify-center gap-2"
@@ -72,7 +72,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
             </button>
           ) : (
             <button
-              className="flex w-full max-w-sm justify-center gap-2 rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D]"
+              className="flex w-full max-w-sm justify-center gap-2 rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D] hover:scale-105 active:scale-95"
               onClick={handleCreate}
             >
               {createPlaylist.isLoading ? (
@@ -100,7 +100,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
             </button>
           )}
           <button
-            className="w-full max-w-sm rounded-full bg-[#8f83d8] p-4 text-lg font-semibold text-white"
+            className="w-full max-w-sm rounded-full bg-[#8f83d8] p-4 text-lg font-semibold text-white hover:scale-105 active:scale-95"
             onClick={removeAll}
           >
             START AGAIN

@@ -27,6 +27,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <main className="min-h-screen overflow-hidden bg-[#504A6D]">
         <UserInfo />
         <Component {...pageProps} />
+
+        <div className="fixed right-0 bottom-0 p-2">
+          <span className="text-xs text-white">Created by Jack Scott</span>
+        </div>
       </main>
     </SessionProvider>
   );

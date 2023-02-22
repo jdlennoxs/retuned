@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import { head, last, map, pluck, propEq, reject } from "ramda";
 import iterateStep from "../utils/iterateStep";
 import useRecommenderStore from "../utils/useRecommenderStore";
@@ -40,7 +45,11 @@ const InfiniteCards = ({
   );
 
   const setNextCards = () => {
-    if (step === "Second" && head(recommendations).length > recommendationAt) {
+    if (
+      step === "Second" &&
+      recommendations.length &&
+      head(recommendations).length > recommendationAt
+    ) {
       setCards([
         head(recommendations)[recommendationAt],
         ...cards.slice(0, cards.length - 1),
@@ -48,6 +57,7 @@ const InfiniteCards = ({
       setRecommendationAt(recommendationAt + 1);
     } else if (
       step === "Third" &&
+      recommendations.length &&
       last(recommendations).length > recommendationAt
     ) {
       setCards([

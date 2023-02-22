@@ -8,7 +8,7 @@ const recommendationParamSelector = (state) => {
       return { seedTracks: state.chosenTracks[1].id };
     case "Finished":
       return {
-        seedTracks: `${state.chosenTracks[0].id},${state.chosenTracks[1].id},${state.chosenTracks[2].id},${state.chosenTracks[3].id}`,
+        seedTracks: `${state.chosenTracks[2].id},${state.chosenTracks[3].id}`,
         targetLoudness: mean(pluck("loudness", state.features)),
         targetValence: mean(pluck("valence", state.features)),
         targetEnergy: mean(pluck("energy", state.features)),

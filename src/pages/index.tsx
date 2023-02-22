@@ -29,7 +29,7 @@ export default function Home() {
       setFeatures(data.body);
     },
   });
-  trpc.spotify.getRecommendations.useQuery(params, {
+  const { isFetching } = trpc.spotify.getRecommendations.useQuery(params, {
     enabled: params.seedTracks !== undefined && features.length !== 3,
     onSuccess: (data) => {
       setRecommendations(
@@ -38,15 +38,12 @@ export default function Home() {
     },
   });
 
+  const isFinished = step === "Finished";
+
   return (
     <>
-      {step === "Finished" ? (
-        <Playlist />
-      ) : (
-        <div className="fixed top-14 left-0 right-0 bottom-0 z-30">
-          <SwipeableTrackCards />
-        </div>
-      )}
+      {!isFinished && <SwipeableTrackCards />}
+      {isFinished && <Playlist isLoading={isFetching} />}
     </>
   );
 }

@@ -46,7 +46,7 @@ const TrackCard = ({
       onPointerUp={() => setIsPointerDown(false)}
       initial={initial}
     >
-      <div className={"relative m-auto place-items-center p-2"}>
+      <div className={"relative m-auto place-items-center p-4 sm:p-2"}>
         {card.preview_url && (
           <AudioPreview isPlaying={isPointerDown} url={card.preview_url} />
         )}

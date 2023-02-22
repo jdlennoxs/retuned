@@ -14,14 +14,14 @@ const getImageSize = (images: SpotifyApi.ImageObject[], size = 300) => {
 
 export const PlaylistTrack = ({ track }: ArtistListingProps) => {
   return (
-    <div>
-      <ReactHoverObserver className={`m-auto max-w-xl overflow-hidden`}>
+    <div className="flex items-center justify-between">
+      <ReactHoverObserver className={`m-auto max-w-xl grow overflow-hidden`}>
         {({ isHovering }: { isHovering: boolean }) => (
           <>
             {track?.preview_url && (
               <AudioPreview isPlaying={isHovering} url={track?.preview_url} />
             )}
-            <div className="flex items-center gap-4 p-2">
+            <div className="flex items-center gap-4 p-2 ">
               <img
                 className="h-20 w-20 object-cover shadow-sm"
                 height="56"
@@ -34,22 +34,18 @@ export const PlaylistTrack = ({ track }: ArtistListingProps) => {
                 <h3 className=" text-[#e3e1e4]">
                   {pluck("name", track.artists).join(", ")}
                 </h3>
-                {/* <a
-                  className="flex gap-2 py-2 text-[white]"
-                  href={`https://open.spotify.com/track/${track.id}`}
-                >
-                  <img
-                    className="h-6"
-                    src="/spotify-white.png"
-                    alt="Spotify logo"
-                  />
-                  <span>PLAY ON SPOTIFY</span>
-                </a> */}
               </div>
             </div>
           </>
         )}
       </ReactHoverObserver>
+      <a
+        className="shrink-0"
+        href={`https://open.spotify.com/track/${track.id}`}
+      >
+        <img className="h-6" src="/spotify-white.png" alt="Spotify logo" />
+        {/* <span className="text-xs">OPEN SPOTIFY</span> */}
+      </a>
     </div>
   );
 };

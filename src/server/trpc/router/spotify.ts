@@ -10,7 +10,7 @@ export const spotifyRouter = router({
       z.object({
         timeRange: time_range,
         limit: z.number().max(50).optional(),
-        offset: z.number().max(40).optional(),
+        offset: z.number().optional(),
       })
     )
     .query(async ({ ctx, input }) => {

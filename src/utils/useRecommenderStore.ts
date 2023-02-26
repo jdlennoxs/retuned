@@ -23,7 +23,7 @@ interface RecommenderState {
   setHasSeedTracks: () => void;
 }
 
-const LIMIT = 10;
+const LIMIT = 15;
 
 const useRecommenderStore = create<RecommenderState>()(
   devtools(

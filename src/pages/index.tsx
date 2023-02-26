@@ -1,8 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
-import { last } from "ramda";
+import { any, equals, last } from "ramda";
 import { useEffect } from "react";
 import Info from "../components/Info";
-import Loading from "../components/Loading";
 import Playlist from "../components/Playlist";
 import SwipeableTrackCards from "../components/SwipeableTrackCards";
 import recommendationParamSelector from "../utils/recommendationParameterSelector";
@@ -25,20 +24,22 @@ export default function Home({ isOpen, closeInfo }) {
     (state) => state.setRecommendations
   );
 
-  trpc.spotify.getTrackFeatures.useQuery(last(chosenTracks)?.id || "", {
-    enabled: !!last(chosenTracks)?.id,
-    onSuccess: (data) => {
-      setFeatures(data.body);
-    },
-  });
-  const { isFetching } = trpc.spotify.getRecommendations.useQuery(params, {
-    enabled: params.seedTracks !== undefined && features.length !== 3,
-    onSuccess: (data) => {
-      setRecommendations(
-        data.body.tracks as SpotifyApi.RecommendationTrackObject[]
-      );
-    },
-  });
+  const { isFetching: isFetchingFeature } =
+    trpc.spotify.getTrackFeatures.useQuery(last(chosenTracks)?.id || "", {
+      enabled: !!last(chosenTracks)?.id,
+      onSuccess: (data) => {
+        setFeatures(data.body);
+      },
+    });
+  const { isFetching: isFetchingRecommendation } =
+    trpc.spotify.getRecommendations.useQuery(params, {
+      enabled: params.seedTracks !== undefined && features.length !== 3,
+      onSuccess: (data) => {
+        setRecommendations(
+          data.body.tracks as SpotifyApi.RecommendationTrackObject[]
+        );
+      },
+    });
 
   const isFinished = step === "Finished";
 
@@ -46,7 +47,14 @@ export default function Home({ isOpen, closeInfo }) {
     <>
       {isOpen && <Info closeInfo={closeInfo} />}
       {!isFinished && <SwipeableTrackCards />}
-      {isFinished && <Playlist isLoading={isFetching} />}
+      {isFinished && (
+        <Playlist
+          isLoading={any(equals(true))([
+            isFetchingFeature,
+            isFetchingRecommendation,
+          ])}
+        />
+      )}
     </>
   );
 }

@@ -31,7 +31,7 @@ export const PlaylistTrack = ({ track, index }: ArtistListingProps) => {
             )}
             <div className="flex items-center gap-4 p-2 ">
               <img
-                className="h-20 w-20 object-cover shadow-sm"
+                className="h-16 w-16 object-cover shadow-sm"
                 height="56"
                 width="56"
                 src={getImageSize(track.album.images)}
@@ -47,10 +47,7 @@ export const PlaylistTrack = ({ track, index }: ArtistListingProps) => {
           </>
         )}
       </ReactHoverObserver>
-      <a
-        className="shrink-0"
-        href={`https://open.spotify.com/track/${track.id}`}
-      >
+      <a className="shrink-0" href={track.uri}>
         <img className="h-6" src="/spotify-white.png" alt="Spotify logo" />
       </a>
     </motion.div>

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export default function Loading() {
   return (
     <motion.div
-      className="m-auto "
+      className="m-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -26,7 +26,9 @@ export default function Loading() {
         </svg>
       </div>
       <div className=" m-4 p-4 text-center">
-        <h1 className="text-lg font-semibold text-white">Loading...</h1>
+        <h1 className="text-lg font-semibold text-white">
+          Building your playlist...
+        </h1>
       </div>
     </motion.div>
   );

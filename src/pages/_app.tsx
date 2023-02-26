@@ -21,7 +21,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta name="description" content="Match with new music just for you" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <main className="min-h-screen overflow-hidden bg-[#504A6D]">
+      <main className="grid h-screen grid-rows-[auto_1fr] overflow-hidden bg-[#504A6D]">
         <UserInfo openInfo={setIsOpen} isOpen={isOpen} />
         <Component {...pageProps} isOpen={isOpen} closeInfo={setIsOpen} />
 

@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      gridTemplateRows: {
+        layout: "auto minmax(0, 1fr) auto",
+      },
       backgroundImage: {
         noise: "url('/noise.png')",
       },

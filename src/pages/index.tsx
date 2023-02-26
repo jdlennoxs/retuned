@@ -2,6 +2,7 @@ import { signIn, useSession } from "next-auth/react";
 import { last } from "ramda";
 import { useEffect } from "react";
 import Info from "../components/Info";
+import Loading from "../components/Loading";
 import Playlist from "../components/Playlist";
 import SwipeableTrackCards from "../components/SwipeableTrackCards";
 import recommendationParamSelector from "../utils/recommendationParameterSelector";

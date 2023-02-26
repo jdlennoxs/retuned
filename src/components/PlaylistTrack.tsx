@@ -1,10 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
+import { motion } from "framer-motion";
 import { pluck } from "ramda";
 import ReactHoverObserver from "react-hover-observer";
 import AudioPreview from "./AudioPreview";
 
 interface ArtistListingProps {
   track: SpotifyApi.TrackObjectFull;
+  index: number;
 }
 
 const getImageSize = (images: SpotifyApi.ImageObject[], size = 300) => {
@@ -12,10 +14,16 @@ const getImageSize = (images: SpotifyApi.ImageObject[], size = 300) => {
   return img?.url || "";
 };
 
-export const PlaylistTrack = ({ track }: ArtistListingProps) => {
+export const PlaylistTrack = ({ track, index }: ArtistListingProps) => {
   return (
-    <div className="flex items-center justify-between">
-      <ReactHoverObserver className={`m-auto max-w-xl grow overflow-hidden`}>
+    <motion.div
+      className="mx-auto flex max-w-sm items-center justify-between px-4"
+      key={track.id}
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.25, delay: 1 + 0.1 * index }}
+    >
+      <ReactHoverObserver className={`max-w-xl grow`}>
         {({ isHovering }: { isHovering: boolean }) => (
           <>
             {track?.preview_url && (
@@ -44,8 +52,7 @@ export const PlaylistTrack = ({ track }: ArtistListingProps) => {
         href={`https://open.spotify.com/track/${track.id}`}
       >
         <img className="h-6" src="/spotify-white.png" alt="Spotify logo" />
-        {/* <span className="text-xs">OPEN SPOTIFY</span> */}
       </a>
-    </div>
+    </motion.div>
   );
 };

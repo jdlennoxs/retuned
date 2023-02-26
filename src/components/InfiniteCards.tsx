@@ -1,16 +1,12 @@
 import { useState } from "react";
 
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { head, last, map, pluck, propEq, reject } from "ramda";
 import iterateStep from "../utils/iterateStep";
 import useRecommenderStore from "../utils/useRecommenderStore";
 import SwipeIndicator from "./SwipeIndicator";
 import TrackCard from "./TrackCard";
+import Loading from "./Loading";
 
 const SWIPE_MIN = 100;
 const filterRecommendations = (state) => {
@@ -27,7 +23,9 @@ const InfiniteCards = ({
 
   const [cardAt, setCardAt] = useState(2);
   const [recommendationAt, setRecommendationAt] = useState(0);
-  const [cards, setCards] = useState([seedTracks[1], seedTracks[0]]);
+  const [cards, setCards] = useState(
+    seedTracks ? [seedTracks[1], seedTracks[0]] : []
+  );
 
   const [dragStart, setDragStart] = useState({
     axis: "null",
@@ -43,7 +41,6 @@ const InfiniteCards = ({
     [-SWIPE_MIN * 2, -SWIPE_MIN, 0, SWIPE_MIN, SWIPE_MIN * 2],
     [0, 1, 1, 1, 0]
   );
-
   const setNextCards = () => {
     if (
       step === "Second" &&
@@ -130,19 +127,19 @@ const InfiniteCards = ({
   };
 
   return (
-    <>
+    <div className="grid grid-rows-layout overflow-hidden">
+      <>
+        <SwipeIndicator x={x} swipeMin={SWIPE_MIN} />
+      </>
       <motion.div
-        className="flex justify-center"
+        className="grid min-h-0 min-w-0 grid-cols-1 grid-rows-[minmax(0,1fr)]"
         animate={{ opacity: 1, y: 0 }}
         initial={{ opacity: 0, y: 100 }}
         transition={{ ease: "easeOut", duration: 1, delay: 0.5 }}
       >
         {renderCards()}
       </motion.div>
-      <div className="fixed top-16 justify-center">
-        <SwipeIndicator x={x} swipeMin={SWIPE_MIN} />
-      </div>
-      <div className="fixed bottom-16 text-center font-semibold">
+      <div className="m-4 p-4 text-center font-semibold">
         <h1 className="text-lg text-white">{last(cards).name}</h1>
         <h3 className="text-[#e3e1e4]">
           {pluck("name")(last(cards).artists).join(", ")}
@@ -155,7 +152,7 @@ const InfiniteCards = ({
           OPEN SPOTIFY
         </a>
       </div>
-    </>
+    </div>
   );
 };
 

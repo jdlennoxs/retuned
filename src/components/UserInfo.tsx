@@ -6,7 +6,7 @@ const UserInfo = ({ openInfo, isOpen }) => {
   return (
     <>
       {status === "authenticated" ? (
-        <div className="fixed top-0 w-full bg-[#504A6D] p-2 text-xl text-white">
+        <div className="w-full bg-[#504A6D] p-2 text-xl text-white">
           <div className="flex items-center justify-between">
             <div className="cursor-pointer" onClick={() => openInfo(true)}>
               Re:<span className="font-semibold">Tuned</span>

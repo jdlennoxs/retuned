@@ -32,11 +32,7 @@ const SwipeableTrackCards = () => {
     setSeedTracks,
   ]);
 
-  return (
-    <div className="relative z-20 m-auto mt-32 flex justify-center">
-      {hasSeedTracks ? <InfiniteCards seedTracks={seedTracks} /> : <Loading />}
-    </div>
-  );
+  return <>{hasSeedTracks && <InfiniteCards seedTracks={seedTracks} />}</>;
 };
 
 export default SwipeableTrackCards;

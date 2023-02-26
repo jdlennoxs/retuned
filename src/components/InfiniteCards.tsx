@@ -147,7 +147,7 @@ const InfiniteCards = ({
         )}
       </motion.div>
       {cards.length ? (
-        <div className="m-4 p-4 text-center font-semibold">
+        <div className="m-4 mb-12 p-4 text-center font-semibold">
           <h1 className="text-lg text-white">{last(cards).name}</h1>
           <h3 className="text-[#e3e1e4]">
             {pluck("name")(last(cards).artists).join(", ")}

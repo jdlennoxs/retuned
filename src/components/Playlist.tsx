@@ -49,7 +49,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
             ))}
           </div>
 
-          <div className="mb-2 flex w-full flex-col items-center justify-center gap-4 bg-[#504A6D] p-8">
+          <div className="mb-12 flex w-full flex-col items-center justify-center gap-4 bg-[#504A6D] p-8">
             {createPlaylist.isSuccess ? (
               <button className="w-full max-w-sm rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D] hover:scale-105 active:scale-95">
                 <a

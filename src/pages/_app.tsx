@@ -21,11 +21,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta name="description" content="Match with new music just for you" />
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <main className="grid h-screen grid-rows-[auto_1fr] overflow-hidden bg-[#504A6D]">
+      <main className="grid h-screen grid-rows-[auto_1fr_auto] overflow-hidden bg-[#504A6D]">
         <UserInfo openInfo={setIsOpen} isOpen={isOpen} />
         <Component {...pageProps} isOpen={isOpen} closeInfo={setIsOpen} />
 
-        <div className="fixed right-0 bottom-0 p-2">
+        <div className="justify-self-end p-2">
           <span className="text-xs text-white">Created by Jack Scott</span>
         </div>
       </main>

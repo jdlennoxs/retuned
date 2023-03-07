@@ -24,7 +24,13 @@ const UserInfo = ({ openInfo, isOpen }) => {
           </div>
         </div>
       ) : (
-        <></>
+        <div className="w-full bg-[#504A6D] p-2 text-xl text-white">
+          <div className="flex items-center justify-between">
+            <div className="cursor-pointer" onClick={() => openInfo(true)}>
+              Re:<span className="font-semibold">Tuned</span>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

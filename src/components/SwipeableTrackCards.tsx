@@ -5,7 +5,6 @@ import { useGetLikedTracksQuery } from "../utils/useGetLikedTracksQuery";
 import { useGetListenedTracksQuery } from "../utils/useGetListenedTracksQuery";
 import useRecommenderStore from "../utils/useRecommenderStore";
 import InfiniteCards from "./InfiniteCards";
-import Loading from "./Loading";
 
 const SwipeableTrackCards = () => {
   const { hasSeedTracks, seedTracks, setHasSeedTracks, setSeedTracks } =
@@ -32,7 +31,15 @@ const SwipeableTrackCards = () => {
     setSeedTracks,
   ]);
 
-  return <>{hasSeedTracks && <InfiniteCards seedTracks={seedTracks} />}</>;
+  return (
+    <>
+      {hasSeedTracks ? (
+        <InfiniteCards seedTracks={seedTracks} />
+      ) : (
+        <div className="flex-1 text-center text-white">Loading</div>
+      )}
+    </>
+  );
 };
 
 export default SwipeableTrackCards;

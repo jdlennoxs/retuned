@@ -25,7 +25,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <Suspense>
           <UserInfo openInfo={setIsOpen} isOpen={isOpen} />
           <Component {...pageProps} isOpen={isOpen} closeInfo={setIsOpen} />
-          <div className="justify-self-end p-2">
+          <div className="self-end justify-self-end p-2">
             <span className="text-xs text-white">Created by Jack Scott</span>
           </div>
         </Suspense>

@@ -46,14 +46,18 @@ export default function Home({ isOpen, closeInfo }) {
   return (
     <>
       {isOpen && <Info closeInfo={closeInfo} />}
-      {!isFinished && <SwipeableTrackCards />}
-      {isFinished && (
-        <Playlist
-          isLoading={any(equals(true))([
-            isFetchingFeature,
-            isFetchingRecommendation,
-          ])}
-        />
+      {status === "authenticated" && (
+        <>
+          {!isFinished && <SwipeableTrackCards />}
+          {isFinished && (
+            <Playlist
+              isLoading={any(equals(true))([
+                isFetchingFeature,
+                isFetchingRecommendation,
+              ])}
+            />
+          )}
+        </>
       )}
     </>
   );

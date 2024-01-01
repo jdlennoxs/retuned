@@ -15,7 +15,7 @@
     "@trpc/react-query": "^10.44.1",
     "@trpc/server": "^10.44.1",
     "@types/spotify-web-playback-sdk": "^0.1.19",
-    "framer-motion": "^9.1.7",
+    "framer-motion": "9.0.1",
     "next": "^14.0.3",
     "next-auth": "^4.24.5",
     "ramda": "^0.28.0",

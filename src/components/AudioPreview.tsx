@@ -8,6 +8,7 @@ const AudioPreview = ({
   isPlaying: boolean;
 }) => {
   const audioRef = useRef(new Audio(url));
+  audioRef.current.volume = 0.5;
   const intervalRef = useRef();
   useEffect(() => {
     const currentAudio = audioRef.current;

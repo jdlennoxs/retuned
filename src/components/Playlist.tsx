@@ -6,8 +6,10 @@ import { trpc } from "../utils/trpc";
 import useRecommenderStore from "../utils/useRecommenderStore";
 import Loading from "./Loading";
 import { PlaylistTrack } from "./PlaylistTrack";
+import { usePlausible } from "next-plausible";
 //["#8f83d8", "#393359", "#ffc661"]
 const Playlist = ({ isLoading }: { isLoading: boolean }) => {
+  const plausible = usePlausible();
   const [randomNumber] = useState(Math.random());
   const { chosenTracks, removeAll, recommendations } = useRecommenderStore(
     (state) => state
@@ -27,6 +29,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
     randomNumber,
   });
   const handleCreate = async () => {
+    plausible("savePlaylist");
     const tracks = pluck("uri", playlist);
     createPlaylist.mutate({ tracks, name: title });
   };
@@ -39,6 +42,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
         <>
           <div className="p-4 text-center text-white">
             <h3 className="text-lg font-semibold">
+              {plausible("complete")}
               Your playlist is complete.
             </h3>
             <h1 className="text-xl font-bold">{title}</h1>
@@ -51,7 +55,10 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
 
           <div className="m-4 flex w-full flex-col items-center justify-center gap-4 bg-[#504A6D] p-4">
             {createPlaylist.isSuccess ? (
-              <button className="w-full max-w-sm rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D] hover:scale-105 active:scale-95">
+              <button
+                className="w-full max-w-sm rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D] hover:scale-105 active:scale-95"
+                onClick={() => plausible("openPlaylist")}
+              >
                 <a
                   href={createPlaylist.data}
                   className="flex justify-center gap-2"
@@ -95,7 +102,10 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
             )}
             <button
               className="w-full max-w-sm rounded-full bg-[#8f83d8] p-4 text-lg font-semibold text-white hover:scale-105 active:scale-95"
-              onClick={removeAll}
+              onClick={() => {
+                plausible("reset");
+                removeAll();
+              }}
             >
               START AGAIN
             </button>

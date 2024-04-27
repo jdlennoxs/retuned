@@ -1,18 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
 import { useSession, signOut } from "next-auth/react";
+import { usePlausible } from "next-plausible";
 
 const UserInfo = ({ openInfo, isOpen }) => {
   const { data: session, status } = useSession();
+  const plausible = usePlausible();
   return (
     <>
       {status === "authenticated" ? (
         <div className="w-full bg-[#504A6D] p-2 text-xl text-white">
           <div className="flex items-center justify-between">
-            <div className="cursor-pointer" onClick={() => openInfo(true)}>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                plausible("openInfo");
+                openInfo(true);
+              }}
+            >
               Re:<span className="font-semibold">Tuned</span>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => signOut()}>Sign out</button>
+              <button
+                onClick={() => {
+                  plausible("signOut");
+                  signOut();
+                }}
+              >
+                Sign out
+              </button>
               <img
                 src={session?.user?.image || ""}
                 width={36}
@@ -26,7 +41,13 @@ const UserInfo = ({ openInfo, isOpen }) => {
       ) : (
         <div className="w-full bg-[#504A6D] p-2 text-xl text-white">
           <div className="flex items-center justify-between">
-            <div className="cursor-pointer" onClick={() => openInfo(true)}>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                plausible("openInfo");
+                openInfo(true);
+              }}
+            >
               Re:<span className="font-semibold">Tuned</span>
             </div>
           </div>

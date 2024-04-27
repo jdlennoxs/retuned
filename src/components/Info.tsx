@@ -1,8 +1,14 @@
+import { usePlausible } from "next-plausible";
+
 const Info = ({ closeInfo }) => {
+  const plausible = usePlausible();
   return (
     <div
       className="absolute z-30 flex h-screen w-screen cursor-pointer bg-[#504A6D]/[0.5]"
-      onClick={() => closeInfo(false)}
+      onClick={() => {
+        plausible("closeInfo");
+        closeInfo(false);
+      }}
     >
       <div className="relative  m-auto place-items-center ">
         <div className="flex flex-col gap-4 rounded-lg bg-white p-12 text-lg text-[#504A6D] shadow-lg sm:max-w-sm">

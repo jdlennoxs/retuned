@@ -6,6 +6,7 @@ import iterateStep from "../utils/iterateStep";
 import useRecommenderStore from "../utils/useRecommenderStore";
 import SwipeIndicator from "./SwipeIndicator";
 import TrackCard from "./TrackCard";
+import { usePlausible } from "next-plausible";
 
 const SWIPE_MIN = 100;
 const filterRecommendations = (state) => {
@@ -17,6 +18,7 @@ const InfiniteCards = ({
 }: {
   seedTracks: SpotifyApi.TrackObjectFull[];
 }) => {
+  const plausible = usePlausible();
   const { addChosenTrack, step } = useRecommenderStore();
   const recommendations = useRecommenderStore(filterRecommendations);
 
@@ -82,12 +84,15 @@ const InfiniteCards = ({
 
   const onDragEnd = (info, card) => {
     if (info.offset.x >= SWIPE_MIN) {
+      plausible("selectTrack");
       setRecommendationAt(0);
       const nextStep = iterateStep();
       animateCardSwipe({ x: SWIPE_MIN * 2, y: 0 }, nextStep);
       addChosenTrack(card);
-    } else if (info.offset.x <= -SWIPE_MIN)
+    } else if (info.offset.x <= -SWIPE_MIN) {
+      plausible("rejectTrack");
       animateCardSwipe({ x: -SWIPE_MIN * 2, y: 0 }, step);
+    }
   };
 
   const renderCards = () => {
@@ -142,7 +147,17 @@ const InfiniteCards = ({
         ) : (
           <div className="self-center p-4 text-center font-semibold text-white">
             <p>Oh no, we&apos;ve run out of suggestions</p>
-            <p>Please refresh to try again</p>
+
+            <p>Please click to refresh and start again</p>
+            <button
+              className="p-4 text-4xl"
+              onClick={() => {
+                plausible("refresh");
+                window.location.reload();
+              }}
+            >
+              🔃
+            </button>
           </div>
         )}
       </motion.div>

@@ -5,10 +5,12 @@ import type {
 import { getProviders, signIn } from "next-auth/react";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../api/auth/[...nextauth]";
+import { usePlausible } from "next-plausible";
 
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const plausible = usePlausible();
   return (
     <div className="absolute flex h-screen w-screen">
       <div className="relative z-30 m-auto place-items-center ">
@@ -36,7 +38,10 @@ export default function SignIn({
             <div key={provider.name}>
               <button
                 className="my-2 flex w-full max-w-sm justify-center gap-2 rounded-full bg-[#1ed760] p-4 text-lg font-semibold text-[white] hover:scale-105 active:scale-95"
-                onClick={() => signIn(provider.id)}
+                onClick={() => {
+                  plausible("signIn");
+                  signIn(provider.id);
+                }}
               >
                 <img
                   className="h-6"

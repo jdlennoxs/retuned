@@ -1,6 +1,6 @@
 import { type Session } from "next-auth";
 import { getSession, SessionProvider } from "next-auth/react";
-import PlausibleProvider from "next-plausible";
+import PlausibleProvider, { usePlausible } from "next-plausible";
 import { type AppType } from "next/app";
 import { trpc } from "../utils/trpc";
 import Head from "next/head";
@@ -12,6 +12,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const plausible = usePlausible();
   const [isOpen, setIsOpen] = useState(false);
   return (
     <PlausibleProvider

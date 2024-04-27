@@ -17,7 +17,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <PlausibleProvider
       domain="retuned.jdlennoxs.com"
       selfHosted={true}
-      customDomain="https://analytics.jdlennoxs.com"
+      scriptProps={{
+        src: "https://analytics.jdlennoxs.com/js/script.js",
+      }}
     >
       <SessionProvider session={session}>
         <Head>

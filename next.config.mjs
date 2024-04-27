@@ -4,7 +4,6 @@
  * This is especially useful for Docker builds.
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env/server.mjs"));
-import { withPlausibleProxy } from "next-plausible";
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -18,4 +17,4 @@ const config = {
     domains: ["i.scdn.co"],
   },
 };
-export default withPlausibleProxy()(config);
+export default config;

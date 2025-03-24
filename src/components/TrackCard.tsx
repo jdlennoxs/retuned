@@ -1,17 +1,17 @@
-/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @next/next/no-img-element no-explicit-any */
 import { motion } from "framer-motion";
 import { useState } from "react";
 import AudioPreview from "./AudioPreview";
 
 interface CardProps {
-  card?: SpotifyApi.TrackObjectFull;
-  style: React.CSSProperties;
-  onDirectionLock: (axis: "x" | "y") => void;
-  onDragEnd: (event: MouseEvent | TouchEvent | PointerEvent, info: any) => void;
-  animate: Record<string, any>;
-  drag: boolean | "x" | "y";
-  initial: Record<string, any>;
-  transition: Record<string, any>;
+  card: any;
+  style: any;
+  onDirectionLock?: any;
+  onDragEnd?: any;
+  animate?: any;
+  drag?: any;
+  initial?: any;
+  transition?: any;
 }
 
 const getImageSize = (images: SpotifyApi.ImageObject[], size = 640) => {

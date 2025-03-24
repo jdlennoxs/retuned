@@ -31,7 +31,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           />
           <link rel="icon" href="/favicon.svg" />
         </Head>
-        <main className="grid h-screen grid-rows-[auto_1fr_auto] overflow-hidden bg-plum">
+        <main className="grid h-screen grid-rows-[auto_1fr_auto] overflow-hidden bg-[#504A6D]">
           <Suspense>
             <UserInfo openInfo={setIsOpen} isOpen={isOpen} />
             <Component {...pageProps} isOpen={isOpen} closeInfo={setIsOpen} />

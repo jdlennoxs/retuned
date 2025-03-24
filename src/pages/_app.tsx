@@ -12,7 +12,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  const plausible = usePlausible();
+  usePlausible();
   const [isOpen, setIsOpen] = useState(false);
   return (
     <PlausibleProvider
@@ -31,7 +31,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           />
           <link rel="icon" href="/favicon.svg" />
         </Head>
-        <main className="grid h-screen grid-rows-[auto_1fr_auto] overflow-hidden bg-[#504A6D]">
+        <main className="grid h-screen grid-rows-[auto_1fr_auto] overflow-hidden bg-plum">
           <Suspense>
             <UserInfo openInfo={setIsOpen} isOpen={isOpen} />
             <Component {...pageProps} isOpen={isOpen} closeInfo={setIsOpen} />

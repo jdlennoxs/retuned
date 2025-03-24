@@ -1,4 +1,5 @@
-/* eslint-disable @next/next/no-img-element no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { motion } from "framer-motion";
 import { useState } from "react";
 import AudioPreview from "./AudioPreview";

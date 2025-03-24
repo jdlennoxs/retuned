@@ -2,7 +2,12 @@
 import { useSession, signOut } from "next-auth/react";
 import { usePlausible } from "next-plausible";
 
-const UserInfo = ({ openInfo }: { openInfo: (isOpen: boolean) => void }) => {
+interface UserInfoProps {
+  openInfo: (isOpen: boolean) => void;
+  isOpen: boolean;
+}
+
+const UserInfo = ({ openInfo }: UserInfoProps) => {
   const { data: session, status } = useSession();
   const plausible = usePlausible();
   return (

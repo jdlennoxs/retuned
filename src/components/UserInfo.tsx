@@ -2,13 +2,13 @@
 import { useSession, signOut } from "next-auth/react";
 import { usePlausible } from "next-plausible";
 
-const UserInfo = ({ openInfo, isOpen }) => {
+const UserInfo = ({ openInfo }: { openInfo: (isOpen: boolean) => void }) => {
   const { data: session, status } = useSession();
   const plausible = usePlausible();
   return (
     <>
       {status === "authenticated" ? (
-        <div className="w-full bg-[#504A6D] p-2 text-xl text-white">
+        <div className="w-full bg-plum p-2 text-xl text-white">
           <div className="flex items-center justify-between">
             <div
               className="cursor-pointer"
@@ -39,7 +39,7 @@ const UserInfo = ({ openInfo, isOpen }) => {
           </div>
         </div>
       ) : (
-        <div className="w-full bg-[#504A6D] p-2 text-xl text-white">
+        <div className="w-full bg-plum p-2 text-xl text-white">
           <div className="flex items-center justify-between">
             <div
               className="cursor-pointer"

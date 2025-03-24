@@ -1,11 +1,17 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-const Steps = ["Start", "First", "Second", "Third", "Finished"] as const;
-type Step = typeof Steps[number];
+type Steps = ["Start", "First", "Second", "Third", "Finished"];
+type Step = Steps[number];
 
 interface RecommenderState {
-  offsets: any;
+  offsets: {
+    mediumLimit: number;
+    shortLimit: number;
+    recentLimit: number;
+    mediumOffset: number;
+    shortOffset: number;
+  }
   step: Step;
   hasSeedTracks: boolean;
   chosenTracks: SpotifyApi.TrackObjectFull[];

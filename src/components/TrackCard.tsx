@@ -4,7 +4,7 @@ import { useState } from "react";
 import AudioPreview from "./AudioPreview";
 
 interface CardProps {
-  card: SpotifyApi.TrackObjectFull;
+  card?: SpotifyApi.TrackObjectFull;
   style: React.CSSProperties;
   onDirectionLock: (axis: "x" | "y") => void;
   onDragEnd: (event: MouseEvent | TouchEvent | PointerEvent, info: any) => void;

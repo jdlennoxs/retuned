@@ -25,18 +25,20 @@ export const spotifyRouter = router({
       z.object({
         seedArtists: z.string().optional(),
         seedTracks: z.string().optional(),
-        target_valence: z.number().optional(),
-        target_energy: z.number().optional(),
-        target_danceability: z.number().optional(),
-        target_acousticness: z.number().optional(),
-        target_loudness: z.number().optional(),
+        target_valence: z.number().min(0).max(1).optional(),
+        target_energy: z.number().min(0).max(1).optional(),
+        target_danceability: z.number().min(0).max(1).optional(),
+        target_acousticness: z.number().min(0).max(1).optional(),
+        target_loudness: z.number().finite().optional(),
       })
     )
     .query(async ({ ctx, input }) => {
+      const { seedArtists, seedTracks, ...targets } = input;
       return await ctx.spotify.getRecommendations({
         limit: 26,
-        seed_artists: input.seedArtists,
-        seed_tracks: input.seedTracks,
+        seed_artists: seedArtists,
+        seed_tracks: seedTracks,
+        ...targets,
       });
     }),
   getTrackFeatures: protectedProcedure

@@ -35,8 +35,8 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
   const createPlaylist = trpc.spotify.postPlaylist.useMutation();
   const title = getTitle({
     name: head(playlist).name,
-    targetEnergy: params.targetEnergy,
-    targetValence: params.targetValence,
+    targetEnergy: params.target_energy,
+    targetValence: params.target_valence,
     randomNumber,
   });
   const handleCreate = async () => {

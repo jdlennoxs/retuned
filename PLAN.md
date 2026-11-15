@@ -16,7 +16,7 @@ The current working tree already contains an unfinished split:
 - `Search.tsx` — already supports recent listening and searching, and selects into the mapper store.
 - `FeatureMap.tsx` — reads the selected song's audio features, but its recommendation query is commented out.
 - `Playlist.tsx` — existing results, previews, Spotify links, and save action; currently tied directly to the matcher store.
-- Shared Spotify tRPC endpoints already exist. Recommendation target fields are accepted but **not forwarded** to Spotify. Recent listening currently excludes everything since midnight.
+- Shared Spotify tRPC endpoints already exist. Recommendation feature targets now use consistent names, are validated, and are forwarded to Spotify. Recent listening currently excludes everything since midnight.
 
 Preserve existing uncommitted work. Reuse the mapper prototype as the starting point, not a second wholesale copy of Re:Tuned.
 
@@ -51,7 +51,7 @@ Use the existing NextAuth session, Spotify app credentials, and backend. No seco
 - Place the starting track at the center of a 2D grid.
 - Show four mystery dots around the current track, with directional labels rather than song identities.
 - Proposed first axes: **happier ↔ sadder** (valence), **higher ↔ lower energy** (energy). Tempo/faster/slower remains an alternative; settle this after verifying data. Do not equate energy with genre/heaviness.
-- Get candidates relative to the current song, with meaningful directional feature constraints. Forward the selected targets to the backend API and check returned features rather than promising direction from a generic recommendation response.
+- Get candidates relative to the current song, with meaningful directional feature constraints. Use the shared backend's target forwarding and check returned features rather than promising direction from a generic recommendation response.
 - Choose four distinct, unvisited candidates. If a direction has no credible result, show it unavailable/retry; don't silently mislabel a song.
 - Selecting a dot appends exactly one track, reveals it as the new current song, and fades the old song down to a visited dot. Keep the connecting path visible and show four new choices around the new current position.
 - Store ordered track IDs, grid positions, and directions explicitly. Lock selection during transitions/fetches and discard stale responses. Handle revisiting a grid coordinate without hiding or overwriting previous steps.

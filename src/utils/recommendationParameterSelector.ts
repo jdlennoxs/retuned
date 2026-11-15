@@ -1,6 +1,7 @@
 import { mean, pluck } from "ramda";
+import { type RouterInputs } from "./trpc";
 
-const recommendationParamSelector = (state) => {
+const recommendationParamSelector = (state): RouterInputs["spotify"]["getRecommendations"] => {
   switch (state.step) {
     case "First":
       return { seedTracks: state.chosenTracks[0].id };
@@ -9,9 +10,11 @@ const recommendationParamSelector = (state) => {
     case "Finished":
       return {
         seedTracks: `${state.chosenTracks[2].id},${state.chosenTracks[3].id}`,
-        targetLoudness: mean(pluck("loudness", state.features)),
-        targetValence: mean(pluck("valence", state.features)),
-        targetEnergy: mean(pluck("energy", state.features)),
+        ...(state.features.length > 0 ? {
+          target_loudness: mean(pluck("loudness", state.features)),
+          target_valence: mean(pluck("valence", state.features)),
+          target_energy: mean(pluck("energy", state.features)),
+        } : {}),
       };
     default:
       return { seedTracks: undefined };

@@ -73,4 +73,12 @@ export const spotifyRouter = router({
       await ctx.spotify.addTracksToPlaylist(res.body.id, input.tracks);
       return res.body.uri;
     }),
+  search: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const encodedQuery = encodeURIComponent(input);
+      return await ctx.spotify.search(encodedQuery, ["track"], {
+        limit: 20,
+      });
+    }),
 });

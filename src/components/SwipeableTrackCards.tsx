@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { shuffle } from "../utils/shuffle";
 import { useGetLikedTracksQuery } from "../utils/useGetLikedTracksQuery";
 import { useGetListenedTracksQuery } from "../utils/useGetListenedTracksQuery";
-import useRecommenderStore from "../utils/useRecommenderStore";
+import useMatcherStore from "@/utils/useMatcherStore";
 import InfiniteCards from "./InfiniteCards";
 
 const SwipeableTrackCards = () => {
   const { hasSeedTracks, seedTracks, setHasSeedTracks, setSeedTracks } =
-    useRecommenderStore();
+    useMatcherStore();
   const { data: listenedTracks, isLoadingListened } =
     useGetListenedTracksQuery();
   const { data: likedTracks, isLoadingLiked } = useGetLikedTracksQuery();

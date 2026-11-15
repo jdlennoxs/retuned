@@ -3,10 +3,10 @@ import { useState } from "react";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { head, last, map, pluck, propEq, reject } from "ramda";
 import iterateStep from "../utils/iterateStep";
-import useRecommenderStore from "../utils/useRecommenderStore";
 import SwipeIndicator from "./SwipeIndicator";
 import TrackCard from "./TrackCard";
 import { usePlausible } from "next-plausible";
+import useMatcherStore from "@/utils/useMatcherStore";
 
 const SWIPE_MIN = 100;
 const filterRecommendations = (state) => {
@@ -19,8 +19,8 @@ const InfiniteCards = ({
   seedTracks: SpotifyApi.TrackObjectFull[];
 }) => {
   const plausible = usePlausible();
-  const { addChosenTrack, step } = useRecommenderStore();
-  const recommendations = useRecommenderStore(filterRecommendations);
+  const { addChosenTrack, step } = useMatcherStore();
+  const recommendations = useMatcherStore(filterRecommendations);
 
   const [cardAt, setCardAt] = useState(2);
   const [recommendationAt, setRecommendationAt] = useState(0);
@@ -164,7 +164,7 @@ const InfiniteCards = ({
       {cards.length ? (
         <div className="m-4 p-4 text-center font-semibold">
           <h1 className="text-lg text-white">{last(cards).name}</h1>
-          <h3 className="text-[#e3e1e4]">
+          <h3 className="text-light">
             {pluck("name")(last(cards).artists).join(", ")}
           </h3>
           <a

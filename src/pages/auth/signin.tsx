@@ -14,11 +14,11 @@ export default function SignIn({
   return (
     <div className="absolute flex h-screen w-screen">
       <div className="relative z-30 m-auto place-items-center ">
-        <div className="flex flex-col gap-4 rounded-lg bg-white p-12 text-lg text-[#504A6D] shadow-lg sm:max-w-sm">
-          <h1 className="my-2 text-3xl text-[#8f83d8]">
-            Re:<span className="font-semibold text-[#504A6D]">Tuned</span>
+        <div className="flex flex-col gap-4 rounded-lg bg-white p-12 text-lg text-plum shadow-lg sm:max-w-sm">
+          <h1 className="my-2 text-3xl text-lilac">
+            Re:<span className="font-semibold text-plum">Tuned</span>
           </h1>
-          <h3 className="-mt-4 font-semibold text-[#8f83d8]">
+          <h3 className="-mt-4 font-semibold text-lilac">
             Match with new music just for you.
           </h3>
           <p>Get a tailored playlist of new music based on your library.</p>
@@ -37,7 +37,7 @@ export default function SignIn({
           {Object.values(providers).map((provider) => (
             <div key={provider.name}>
               <button
-                className="my-2 flex w-full max-w-sm justify-center gap-2 rounded-full bg-[#1ed760] p-4 text-lg font-semibold text-[white] hover:scale-105 active:scale-95"
+                className="my-2 flex w-full max-w-sm justify-center gap-2 rounded-full bg-spotify p-4 text-lg font-semibold text-[white] hover:scale-105 active:scale-95"
                 onClick={() => {
                   plausible("signIn");
                   signIn(provider.id);

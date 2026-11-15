@@ -1,8 +1,16 @@
-/** @type {import('tailwindcss').Config} */
+/** @satisfies {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      colors: {
+        light: '#e3e1e4',
+        lilac: '#8f83d8',
+        plum: '#504A6D',
+        indigo: '#393359',
+        gold: '#ffc661',
+        spotify: '#1ed760',
+      },
       gridTemplateRows: {
         layout: "auto minmax(0, 1fr) auto",
       },

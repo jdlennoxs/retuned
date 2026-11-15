@@ -1,21 +1,32 @@
 import { head, last, pluck, uniqBy } from "ramda";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getTitle } from "../utils/getTitle";
 import recommendationParamSelector from "../utils/recommendationParameterSelector";
 import { trpc } from "../utils/trpc";
-import useRecommenderStore from "../utils/useRecommenderStore";
+import useMatcherStore from "@/utils/useMatcherStore";
 import Loading from "./Loading";
-import { PlaylistTrack } from "./PlaylistTrack";
+import { Track } from "./Track";
 import { usePlausible } from "next-plausible";
+import { MotionWrapper } from "./MotionWrapper";
+import { PreviewWrapper } from "./PreviewWrapper";
+import { SpotifyLink } from "./SpotifyLink";
 //["#8f83d8", "#393359", "#ffc661"]
 const Playlist = ({ isLoading }: { isLoading: boolean }) => {
   const plausible = usePlausible();
   const [randomNumber] = useState(Math.random());
-  const { chosenTracks, removeAll, recommendations } = useRecommenderStore(
+
+  // Track completion
+  useEffect(() => {
+    {
+      plausible("complete");
+    }
+  }, []);
+
+  const { chosenTracks, recommendations, removeAll } = useMatcherStore(
     (state) => state
   );
 
-  const params = useRecommenderStore(recommendationParamSelector);
+  const params = useMatcherStore(recommendationParamSelector);
 
   const playlist = uniqBy(
     (x) => x?.id,
@@ -40,23 +51,32 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
         <Loading />
       ) : (
         <>
-          <div className="p-4 text-center text-white">
+          <div className="mt-8 mb-4 px-4 text-center text-white">
             <h3 className="text-lg font-semibold">
-              {plausible("complete")}
               Your playlist is complete.
             </h3>
             <h1 className="text-xl font-bold">{title}</h1>
           </div>
-          <div className="overflow-x-hidden overflow-y-scroll">
+          <div className="overflow-x-hidden overflow-y-scroll max-w-sm mb-[-1rem] relative">
+
             {playlist?.map((track, index) => (
-              <PlaylistTrack track={track} index={index} key={track.id} />
+              <div key={track.id} className="px-4">
+                <MotionWrapper index={index} className="flex justify-between w-full items-center">
+                  <PreviewWrapper previewUrl={track.preview_url}>
+                    <Track track={track} />
+                  </PreviewWrapper>
+                  <SpotifyLink uri={track.uri} />
+                </MotionWrapper>
+              </div>
             ))}
           </div>
-
-          <div className="m-4 flex w-full flex-col items-center justify-center gap-4 bg-[#504A6D] p-4">
+          <div className="w-full bg-gradient-to-t from-plum to-transparent pointer-events-none z-10 m-[-1rem]"></div>
+          <div
+            className="m-4 flex w-full flex-col items-center justify-center gap-4 bg-plum p-4 "
+          >
             {createPlaylist.isSuccess ? (
               <button
-                className="w-full max-w-sm rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D] hover:scale-105 active:scale-95"
+                className="w-full max-w-[22rem] rounded-full bg-[white] p-4 text-lg font-semibold text-plum hover:scale-105 active:scale-95"
                 onClick={() => plausible("openPlaylist")}
               >
                 <a
@@ -69,7 +89,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
               </button>
             ) : (
               <button
-                className="flex w-full max-w-sm justify-center gap-2 rounded-full bg-[white] p-4 text-lg font-semibold text-[#504A6D] hover:scale-105 active:scale-95"
+                className="flex w-full max-w-[22rem] justify-center gap-2 rounded-full bg-[white] p-4 text-lg font-semibold text-plum hover:scale-105 active:scale-95"
                 onClick={handleCreate}
               >
                 {createPlaylist.isLoading ? (
@@ -83,7 +103,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
                   >
                     <path
                       strokeLinecap="round"
-                      stroke="#504A6D"
+                      stroke="currentColor"
                       strokeLinejoin="round"
                       d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 11-.99-3.467l2.31-.66a2.25 2.25 0 001.632-2.163zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 01-1.632 2.163l-1.32.377a1.803 1.803 0 01-.99-3.467l2.31-.66A2.25 2.25 0 009 15.553z"
                     />
@@ -101,7 +121,7 @@ const Playlist = ({ isLoading }: { isLoading: boolean }) => {
               </button>
             )}
             <button
-              className="w-full max-w-sm rounded-full bg-[#8f83d8] p-4 text-lg font-semibold text-white hover:scale-105 active:scale-95"
+              className="w-full max-w-[22rem] rounded-full bg-lilac p-4 text-lg font-semibold text-white hover:scale-105 active:scale-95"
               onClick={() => {
                 plausible("reset");
                 removeAll();

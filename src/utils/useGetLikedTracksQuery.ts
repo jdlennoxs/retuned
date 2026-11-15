@@ -12,10 +12,10 @@ import {
 } from "ramda";
 import { useState } from "react";
 import { trpc } from "./trpc";
-import useRecommenderStore from "./useRecommenderStore";
+import useMatcherStore from "@/utils/useMatcherStore";
 
 export const useGetLikedTracksQuery = () => {
-  const { recentLimit } = useRecommenderStore((state) => state.offsets);
+  const { recentLimit } = useMatcherStore((state) => state.offsets);
 
   const [offset, setOffset] = useState(0);
   const { isLoading: isLoadingMeta } = trpc.spotify.getLikedTracks.useQuery(
@@ -45,12 +45,12 @@ export const useGetLikedTracksQuery = () => {
     data: !likedTracks
       ? []
       : (pipe(
-          map(path(["body", "items"])),
-          flatten,
-          uniq,
-          pluck("track"),
-          reject(propEq("preview_url", null))
-        )([likedTracks, recentTracks]) as SpotifyApi.TrackObjectFull[]),
+        map(path(["body", "items"])),
+        flatten,
+        uniq,
+        pluck("track"),
+        reject(propEq("preview_url", null))
+      )([likedTracks, recentTracks]) as SpotifyApi.TrackObjectFull[]),
 
     isLoadingLiked: any(equals(true))([
       isLoadingMeta,

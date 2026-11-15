@@ -1,10 +1,12 @@
-import { motion, useTransform } from "framer-motion";
+import { motion, useTransform, type MotionValue } from "framer-motion";
+import tailwindConfig from '../../tailwind.config.cjs';
 
-const SwipeIndicator = ({ x, swipeMin }) => {
+const SwipeIndicator = ({ x, swipeMin }: { x: MotionValue<number>; swipeMin: number }) => {
+  const colors = tailwindConfig.theme.extend.colors;
   const color = useTransform(
     x,
     [-100, 0, 100],
-    ["#8f83d8", "#393359", "#ffda61"]
+    [colors.lilac, colors.indigo, colors.gold]
   );
   const opacity = useTransform(x, [-swipeMin, 0, swipeMin], [1, 0, 1]);
   const tickPath = useTransform(x, [10, swipeMin / 2], [0, 1]);

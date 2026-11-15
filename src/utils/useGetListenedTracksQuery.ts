@@ -10,10 +10,12 @@ import {
   uniq,
 } from "ramda";
 import { trpc } from "./trpc";
-import useRecommenderStore from "./useRecommenderStore";
+import useMatcherStore from "@/utils/useMatcherStore";
 
 export const useGetListenedTracksQuery = () => {
-  const {mediumLimit,mediumOffset,shortLimit,shortOffset} = useRecommenderStore((state) => state.offsets);
+  const { mediumLimit, mediumOffset, shortLimit, shortOffset } = useMatcherStore(
+    (state) => state.offsets
+  );
   const { data: mediumTracks, isLoading: isLoadingMedium } =
     trpc.spotify.getUserTopTracks.useQuery({
       timeRange: "medium_term",

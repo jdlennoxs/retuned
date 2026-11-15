@@ -16,10 +16,15 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     // remove this
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
+    "tailwind.d.ts",
     "dec.d.ts",
     "**/*.ts",
     "**/*.tsx",

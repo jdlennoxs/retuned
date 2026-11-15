@@ -1,21 +1,21 @@
-import useRecommenderStore from "./useRecommenderStore";
+import useMatcherStore from "./useMatcherStore";
 
 const iterateStep = () => {
-  const step = useRecommenderStore.getState().step;
+  const step = useMatcherStore.getState().step;
   if (step === "Start") {
-    useRecommenderStore.setState({ step: "First" });
+    useMatcherStore.setState({ step: "First" });
     return "First";
   }
   if (step === "First") {
-    useRecommenderStore.setState({ step: "Second" });
+    useMatcherStore.setState({ step: "Second" });
     return "Second";
   }
   if (step === "Second") {
-    useRecommenderStore.setState({ step: "Third" });
+    useMatcherStore.setState({ step: "Third" });
     return "Third";
   }
   if (step === "Third") {
-    useRecommenderStore.setState({ step: "Finished" });
+    useMatcherStore.setState({ step: "Finished" });
     return "Finished";
   }
 };

@@ -1,42 +1,36 @@
-import {
-  any,
-  equals,
-  flatten,
-  map,
-  path,
-  pipe,
-  propEq,
-  reject,
-  uniq,
-} from "ramda";
+import { uniqBy } from "ramda";
+import { useMemo } from "react";
+import { shuffle } from "./shuffle";
 import { trpc } from "./trpc";
 import useMatcherStore from "@/utils/useMatcherStore";
 
 export const useGetListenedTracksQuery = () => {
-  const { mediumLimit, mediumOffset, shortLimit, shortOffset } = useMatcherStore(
+  const { mediumLimit, shortLimit } = useMatcherStore(
     (state) => state.offsets
   );
   const { data: mediumTracks, isLoading: isLoadingMedium } =
     trpc.spotify.getUserTopTracks.useQuery({
       timeRange: "medium_term",
-      limit: mediumLimit,
-      offset: mediumOffset,
+      limit: 50,
+      offset: 0,
     });
   const { data: shortTracks, isLoading: isLoadingShort } =
     trpc.spotify.getUserTopTracks.useQuery({
       timeRange: "short_term",
-      limit: shortLimit,
-      offset: shortOffset,
+      limit: 50,
+      offset: 0,
     });
 
-  return {
-    data: pipe(
-      map(path(["body", "items"])),
-      flatten,
-      uniq,
-      reject(propEq("preview_url", null))
-    )([mediumTracks, shortTracks]) as SpotifyApi.TrackObjectFull[],
+  const data = useMemo(() => {
+    const medium = shuffle((mediumTracks?.body.items ?? [])
+      .filter((track) => !!track.preview_url)).slice(0, mediumLimit);
+    const short = shuffle((shortTracks?.body.items ?? [])
+      .filter((track) => !!track.preview_url)).slice(0, shortLimit);
+    return uniqBy((track) => track.id, medium.concat(short));
+  }, [mediumTracks, shortTracks, mediumLimit, shortLimit]);
 
-    isLoadingListened: any(equals(true))([isLoadingMedium, isLoadingShort]),
+  return {
+    data,
+    isLoadingListened: isLoadingMedium || isLoadingShort,
   };
 };

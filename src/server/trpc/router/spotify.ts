@@ -65,7 +65,6 @@ export const spotifyRouter = router({
     .query(async ({ ctx, input }) => {
       return await ctx.spotify.getMyRecentlyPlayedTracks({
         limit: input.limit || 10,
-        before: new Date().setHours(0, 0, 0, 0).valueOf(),
       });
     }),
   postPlaylist: protectedProcedure

@@ -1,15 +1,4 @@
-import {
-  any,
-  equals,
-  flatten,
-  map,
-  path,
-  pipe,
-  pluck,
-  propEq,
-  reject,
-  uniq,
-} from "ramda";
+import { uniqBy } from "ramda";
 import { useState } from "react";
 import { trpc } from "./trpc";
 import useMatcherStore from "@/utils/useMatcherStore";
@@ -17,24 +6,19 @@ import useMatcherStore from "@/utils/useMatcherStore";
 export const useGetLikedTracksQuery = () => {
   const { recentLimit } = useMatcherStore((state) => state.offsets);
 
-  const [offset, setOffset] = useState(0);
-  const { isLoading: isLoadingMeta } = trpc.spotify.getLikedTracks.useQuery(
-    { limit: 1 },
-    {
-      onSuccess: (data) => {
-        setOffset(Math.floor(Math.random() * (data.body.total - 30)));
-      },
-      enabled: offset === 0,
-    }
-  );
-  const { data: likedTracks, isLoading: isLoadingLiked } =
+  const [randomNumber] = useState(Math.random);
+  const { data: meta, isLoading: isLoadingMeta } =
+    trpc.spotify.getLikedTracks.useQuery({ limit: 1 });
+  const maxOffset = Math.max(0, (meta?.body.total ?? 0) - 30);
+  const offset = Math.floor(randomNumber * (maxOffset + 1));
+  const { data: likedTracks, isInitialLoading: isLoadingLiked } =
     trpc.spotify.getLikedTracks.useQuery(
       {
         limit: 30,
         offset,
       },
       {
-        enabled: !!offset,
+        enabled: !!meta,
       }
     );
   const { data: recentTracks, isLoading: isLoadingRecent } =
@@ -42,20 +26,12 @@ export const useGetLikedTracksQuery = () => {
       limit: recentLimit,
     });
   return {
-    data: !likedTracks
-      ? []
-      : (pipe(
-        map(path(["body", "items"])),
-        flatten,
-        uniq,
-        pluck("track"),
-        reject(propEq("preview_url", null))
-      )([likedTracks, recentTracks]) as SpotifyApi.TrackObjectFull[]),
-
-    isLoadingLiked: any(equals(true))([
-      isLoadingMeta,
-      isLoadingLiked,
-      isLoadingRecent,
-    ]),
+    data: uniqBy(
+      (track) => track.id,
+      [...(likedTracks?.body.items ?? []), ...(recentTracks?.body.items ?? [])]
+        .map((item) => item.track)
+        .filter((track) => !!track.preview_url)
+    ),
+    isLoadingLiked: isLoadingMeta || isLoadingLiked || isLoadingRecent,
   };
 };

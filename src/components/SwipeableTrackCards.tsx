@@ -16,10 +16,10 @@ const SwipeableTrackCards = () => {
   // Update the seed data only once
   useEffect(() => {
     if (!isLoadingLiked && !isLoadingListened && !hasSeedTracks) {
-      setHasSeedTracks();
       setSeedTracks(
         shuffle(uniqBy((x) => x?.id, listenedTracks.concat(likedTracks)))
       );
+      setHasSeedTracks();
     }
   }, [
     hasSeedTracks,

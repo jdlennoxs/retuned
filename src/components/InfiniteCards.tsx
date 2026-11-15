@@ -24,7 +24,7 @@ const InfiniteCards = ({
 
   const [cardAt, setCardAt] = useState(2);
   const [recommendationAt, setRecommendationAt] = useState(0);
-  const [cards, setCards] = useState([seedTracks[1], seedTracks[0]]);
+  const [cards, setCards] = useState(() => seedTracks.slice(0, 2).reverse());
 
   const [dragStart, setDragStart] = useState({
     axis: "null",
@@ -63,7 +63,7 @@ const InfiniteCards = ({
       ]);
       setRecommendationAt(recommendationAt + 1);
     } else if (cardAt < seedTracks.length) {
-      setCards([seedTracks[cardAt], ...cards.slice(0, cards.length - 1)]);
+      setCards([...seedTracks.slice(cardAt, cardAt + 1), ...cards.slice(0, cards.length - 1)]);
     } else {
       setCards([...cards.slice(0, cards.length - 1)]);
     }

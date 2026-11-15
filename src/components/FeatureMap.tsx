@@ -4,25 +4,53 @@ import { trpc } from "@/utils/trpc";
 import Cube from "@/components/Cube";
 
 const FeatureMap = () => {
-    const { chosenTracks, setFeatures } = useMapperStore();
-    const { data: features, isFetching: isFetchingFeature } =
-        trpc.spotify.getTrackFeatures.useQuery(last(chosenTracks)?.id || "", {
-            enabled: !!last(chosenTracks)?.id,
-            onSuccess: (data) => {
-                setFeatures(data.body);
-            },
-        });
-    // const { data: recommendations, isFetching: isFetchingRecommendation } =
-    //     trpc.spotify.getRecommendations.useQuery(params, {
-    //         enabled: params.seedTracks !== undefined && features.length !== 3,
-    //         onSuccess: (data) => {
-    //             setRecommendations(
-    //                 data.body.tracks as SpotifyApi.RecommendationTrackObject[]
-    //             );
-    //         },
-    //     });
-    if (isFetchingFeature && chosenTracks.length > 0) return <div>Loading...</div>
-    return <Cube points={features?.body} tracks={chosenTracks[0]} />
-}
+  const { chosenTracks } = useMapperStore();
+  const current = last(chosenTracks);
+  const originalArtistIds = new Set(
+    current?.artists.map((artist) => artist.id)
+  );
+
+  const recommendations = trpc.spotify.getRecommendations.useQuery(
+    { seedTracks: current?.id },
+    { enabled: !!current }
+  );
+
+  const tracks =
+    current && recommendations.isSuccess
+      ? [
+          current,
+          ...recommendations.data.body.tracks
+            .filter(
+              (track) =>
+                track.id !== current.id &&
+                track.preview_url !== null &&
+                !track.artists.some((artist) =>
+                  originalArtistIds.has(artist.id)
+                )
+            )
+            .slice(0, 6),
+        ]
+      : [];
+
+  const featureQueries = trpc.useQueries((query) =>
+    tracks.map((track) => query.spotify.getTrackFeatures(track.id))
+  );
+
+  const hasError =
+    recommendations.isError || featureQueries.some((query) => query.isError);
+
+  const isReady =
+    !!current &&
+    recommendations.isSuccess &&
+    featureQueries.every((query) => query.isSuccess);
+
+  const plottedTracks = tracks.map((track, index) => ({
+    track,
+    features: featureQueries[index]?.data?.body,
+  }));
+
+  if (!isReady) return <div>Loading...</div>;
+  return <Cube tracks={plottedTracks} />;
+};
 
 export default FeatureMap;
